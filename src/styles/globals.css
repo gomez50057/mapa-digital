@@ -48,3 +48,23 @@ body {
   border-radius: 2.3rem 0 0 2.3rem;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
+
+
+.PopupT {
+  text-align: center;
+  font-weight: 900;
+  margin-bottom: 4px;
+  color: var(--blanco);
+  background-color: var(--vinoClr);
+}
+
+.PopupSubT {
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  color: var(--doradoOsc);
+}
+
+.PopText {
+  display: inline;
+}

@@ -1,6 +1,117 @@
 // src/data/customLayers.js
 import L from "leaflet";
 
+/* ==================== Utils seguros ==================== */
+const fmtNum = (v) => {
+  const n = typeof v === "number" ? v : Number(v);
+  return Number.isFinite(n) ? n.toLocaleString("es-MX") : "—";
+};
+const fmtArea = (v) => {
+  const n = typeof v === "number" ? v : Number(v);
+  return Number.isFinite(n) ? `${n.toFixed(3)} km²` : "—";
+};
+
+
+/* ==================== ZMVM (por entidad) ==================== */
+function buildZMVM(data, paneId) {
+  return L.geoJSON(data, {
+    pane: paneId,
+    style: (feature) => {
+      const ent = feature?.properties?.NOM_ENT;
+      const color =
+        ent === "Hidalgo" ? "#BC955B" :
+          ent === "Estado de México" ? "#691B31" :
+            ent === "Ciudad de México" ? "#3a9680" :
+              "orange";
+      return {
+        fillColor: color,
+        color,
+        weight: 2.6,
+        fillOpacity: 0.45
+      };
+    },
+    pointToLayer: (feat, latlng) => L.circleMarker(latlng, { pane: paneId, radius: 6 }),
+    onEachFeature: (feature, layer) => {
+      const p = feature?.properties ?? {};
+      const poblacionMun = fmtNum(p.POBMUN);
+      const poblacionFem = fmtNum(p.POBFEM);
+      const poblacionMas = fmtNum(p.POBMAS);
+      const supMun = fmtArea(p.Superficie);
+      const pobMetro = fmtNum(p.POBMETRO);
+
+      const html =
+        `<div class='PopupT'>${p.NOM_ENT ?? "Entidad"}</div>` +
+        `<b>Nombre del Municipio:</b> ${p.NOM_MUN ?? "—"}` +
+        `<br><b>Población Municipal:</b> ${poblacionMun}` +
+        `<br><b>Mujeres:</b> ${poblacionFem}` +
+        `<br><b>Hombres:</b> ${poblacionMas}` +
+        `<br><b>Superficie:</b> ${supMun}` +
+        `<br><b>Población Metropolitana:</b> ${pobMetro}`;
+
+      layer.bindPopup(html);
+    }
+  });
+}
+
+/* ==================== ZMP / ZMT / ZMTUL (metropolitanas genéricas) ==================== */
+function buildMetropolitana(data, paneId, fillColor, strokeColor, zonaLabel = "Zona Metropolitana") {
+  return L.geoJSON(data, {
+    pane: paneId,
+    style: () => ({
+      fillColor: fillColor,
+      fillOpacity: 0.7,
+      color: strokeColor,
+      weight: 2
+    }),
+    pointToLayer: (feat, latlng) => L.circleMarker(latlng, { pane: paneId, radius: 6 }),
+    onEachFeature: (feature, layer) => {
+      const p = feature?.properties ?? {};
+      const poblacionMun = fmtNum(p.POBMUN);
+      const poblacionFem = fmtNum(p.POBFEM);
+      const poblacionMas = fmtNum(p.POBMAS);
+      const supMun = fmtArea(p.Superficie);
+      const pobEst = fmtNum(p.POB_ESTATA);
+
+      let html =
+        `<div class='PopupT'><b>${zonaLabel} de</b> ${p.NO_Zona ?? "—"}</div>` +
+        `<b>Municipio:</b> ${p.NOM_MUN ?? "—"}` +
+        `<br><b>Población Municipal:</b> ${poblacionMun}` +
+        `<br><b>Mujeres:</b> ${poblacionFem}` +
+        `<br><b>Hombres:</b> ${poblacionMas}` +
+        `<br><b>Superficie:</b> ${supMun}` +
+        `<br><b>Población Metropolitana:</b> ${pobEst}` +
+        `<div class='PopupSubT'><b>Instrumentos de Planeación</b></div>`;
+
+      // PMDU
+      const PMDU = p.PMDU ?? "—";
+      if (PMDU !== "No existe" && p.LINKPMDU) {
+        html += `<b>PMDU:</b> <a href='${p.LINKPMDU}' target='_blank'>${p.NOM_LINK_P ?? "Consultar"}</a> <b>(${p.FECH ?? "—"})</b>`;
+      } else {
+        html += `<b>PMDU:</b> ${PMDU}`;
+      }
+
+      // PMD
+      if (p.LINKPMD) {
+        html += `<br><b>PMD:</b> <a href='${p.LINKPMD}' target='_blank'><b> Consultar </b></a> <b>(${p.FECHPMD ?? "—"})</b>`;
+      } else {
+        html += `<br><b>PMD:</b> —`;
+      }
+
+      // ATLAS
+      const ATLAS = p.ATLAS ?? "—";
+      if (ATLAS !== "No existe" && p.LINKATLAS) {
+        html += `<br><b>Atlas de Riesgos:</b> <a href='${p.LINKATLAS}' target='_blank'><b> Consultar </b></a> <b>(${p.FECHATLAS ?? "—"})</b>`;
+      } else {
+        html += `<br><b>Atlas de Riesgos:</b> ${ATLAS}`;
+      }
+
+      layer.bindPopup(html);
+    }
+  });
+}
+
+
+
 export function buildInfoHgoLayer({ data, paneId, color = "#fff", layerName }) {
   return L.geoJSON(data, {
     pane: paneId,
@@ -105,9 +216,21 @@ export function buildEscPrivLayer({ data, paneId, layerDef }) {
   });
 }
 
-// Registro de builders por id de capa (puedes añadir más luego)
 export const LAYER_BUILDERS = {
   "hgo_info_gen": (data, paneId, ld) => buildInfoHgoLayer({ data, paneId, color: "#fff", layerName: ld?.name }),
-  "esc_priv_ms": (data, paneId, ld) => buildEscPrivLayer({ data, paneId, layerDef: ld }) // ← nuevo
-};
+  "esc_priv_ms": (data, paneId, ld) => buildEscPrivLayer({ data, paneId, layerDef: ld }),
+  // ZMVM con color por entidad
+  zmvm_info: (data, paneId /*, ld */) => buildZMVM(data, paneId),
 
+  // Metropolitana Pachuca
+  zmpachuca_info: (data, paneId /*, ld */) =>
+    buildMetropolitana(data, paneId, "#B6DC76", "transparent", "Zona Metropolitana"),
+
+  // Metropolitana Tula
+  zmtula_info: (data, paneId /*, ld */) =>
+    buildMetropolitana(data, paneId, "Aqua", "transparent", "Zona Metropolitana"),
+
+  // Metropolitana Tulancingo
+  zmtulancingo_info: (data, paneId /*, ld */) =>
+    buildMetropolitana(data, paneId, "#241E4E", "transparent", "Zona Metropolitana"),
+};

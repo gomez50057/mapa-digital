@@ -67,7 +67,7 @@ function ToolsMenu({ id, zCurrent = 400, onZTop, onZUp, onZDown, onZBottom, onZS
         <div className={styles.toolsRow}>
           <input
             type="range"
-            min={-1000}
+            min={200}
             max={2000}
             step={10}
             value={val}
