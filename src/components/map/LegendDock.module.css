@@ -1,0 +1,66 @@
+.legendDock {
+  position: absolute;
+  right: clamp(8px, 2vw, 16px);
+  bottom: clamp(8px, 2vh, 16px);
+  z-index: 9000;
+  max-height: min(60vh, 70dvh);
+  width: clamp(240px, 28vw, 340px);
+  pointer-events: auto;
+}
+
+.legendList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  /* SOLO vertical */
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+
+.legendCard {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  padding: 10px;
+}
+
+.legendTitle {
+  font-size: .9rem;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table td {
+  padding: 2px 4px;
+  font-size: .82rem;
+}
+
+.color {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+}
+
+.empty {
+  font-size: .8rem;
+  color: #666;
+  text-align: center;
+}
+
+@media (max-width:768px) {
+  .legendDock {
+    width: clamp(260px, 80vw, 92vw);
+    max-height: 45vh;
+  }
+}
