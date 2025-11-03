@@ -84,9 +84,12 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
       worldCopyJump: false,
     });
 
-    // Forzar que los popups estén al frente
+    // Forzar que popups/tooltip estén al frente (más alto que cualquier pane_vec_*, cuyo máximo es 9999)
+    const TOP_Z = 20000;
     const popupPane = map.getPane("popupPane");
-    if (popupPane) popupPane.style.zIndex = "9999";
+    if (popupPane) popupPane.style.zIndex = String(TOP_Z);
+    const tooltipPane = map.getPane("tooltipPane");
+    if (tooltipPane) tooltipPane.style.zIndex = String(TOP_Z - 1); // justo debajo del popup
 
     map.fitBounds(REGION_BOUNDS, { padding: [20, 20] });
     const computedMin = map.getBoundsZoom(REGION_BOUNDS, true);
@@ -170,10 +173,10 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
   const buildVectorLayer = (ld, paneId, renderer) => {
     const data = GEOJSON_REGISTRY[ld.geojsonId];
     const builder = LAYER_BUILDERS[ld.id];
-    if (builder) {
-      // builder personalizado; debe respetar pane/renderer si aplica
-      return builder(data, paneId, ld);
-    }
+    if (builder) return builder(data, paneId, ld);
+
+    const isTouch = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+
     return L.geoJSON(data, {
       pane: paneId,
       renderer,
@@ -188,9 +191,35 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
       onEachFeature: (feature, lyr) => {
         const props = feature?.properties || {};
         const title = props.nombre ?? ld.name ?? "Elemento";
-        const lines = Object.entries(props).map(([k, v]) => `<div><b>${k}:</b> ${v}</div>`).join("");
-        lyr.bindTooltip(`<div><b>${title}</b></div>${lines}`, { sticky: true });
-        lyr.on("click", (e) => lyr.openTooltip(e.latlng));
+        const lines = Object.entries(props)
+          .map(([k, v]) => `<div><b>${k}:</b> ${v}</div>`)
+          .join("");
+
+        // Tooltip que sigue al cursor; lo colocamos en tooltipPane (ya elevado)
+        lyr.bindTooltip(
+          `<div><b>${title}</b></div>${lines}`,
+          { sticky: true, pane: "tooltipPane", direction: "top", opacity: 0.95 }
+        );
+
+        // Hover abre / cierra
+        lyr.on("mouseover", (e) => {
+          lyr.openTooltip(e.latlng);
+          if (lyr.bringToFront) lyr.bringToFront();
+        });
+        lyr.on("mousemove", (e) => {
+          // mantiene el tooltip pegado al cursor (útil si el feature es grande)
+          if (lyr.isTooltipOpen && lyr.isTooltipOpen()) lyr.openTooltip(e.latlng);
+        });
+        lyr.on("mouseout", () => {
+          lyr.closeTooltip();
+        });
+
+        // Fallback para touch (sin hover real)
+        if (isTouch) {
+          lyr.on("click", (e) => {
+            lyr.openTooltip(e.latlng);
+          });
+        }
       },
     });
   };
