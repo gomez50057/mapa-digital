@@ -1252,8 +1252,240 @@ export const LAYERS_TREE = [
             ]
           }
         ]
-      }
+      },
 
+      /* ==================== Cuautepec de Hinojosa ==================== */
+      {
+        id: "cuautepec",
+        name: "Cuautepec de Hinojosa",
+        children: [
+          {
+            id: "cua_pmdu",
+            name: "PMDU",
+            children: [
+              // -------- Zonificación Secundaria --------
+              {
+                id: "cua_zon_sec",
+                name: "Zonificación Secundaria",
+                layers: [
+                  {
+                    id: "Habitacional_Densidad_Mínima_Cuautepec",
+                    name: "Habitacional Densidad Mínima (HD1)",
+                    type: "vector",
+                    geojsonId: "Habitacional_Densidad_Mínima_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_ZonSec",
+                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendItem: "Habitacional Densidad Mínima (HD1)",
+                    defaultVisible: false,
+                    defaultZ: 760
+                  },
+                  {
+                    id: "Habitacional_Densidad_Baja_Cuautepec",
+                    name: "Habitacional Densidad Baja (HD2)",
+                    type: "vector",
+                    geojsonId: "Habitacional_Densidad_Baja_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_ZonSec",
+                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendItem: "Habitacional Densidad Baja (HD2)",
+                    defaultVisible: false,
+                    defaultZ: 761
+                  },
+                  {
+                    id: "comercio_y_servicios_densidad_minima_Cuautepec",
+                    name: "CSD1: Comercio y Servicios Densidad Mínima",
+                    type: "vector",
+                    geojsonId: "comercio_y_servicios_densidad_minima_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_ZonSec",
+                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendItem: "CSD1: Comercio y Servicios Densidad Mínima",
+                    defaultVisible: false,
+                    defaultZ: 762
+                  },
+                  {
+                    id: "comercio_y_servicios_densidad_baja_Cuautepec",
+                    name: "CSD2: Comercio y Servicios Densidad Baja",
+                    type: "vector",
+                    geojsonId: "comercio_y_servicios_densidad_baja_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_ZonSec",
+                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendItem: "CSD2: Comercio y Servicios Densidad Baja",
+                    defaultVisible: false,
+                    defaultZ: 763
+                  },
+                  {
+                    id: "comercio_y_servicios_densidad_media_Cuautepec",
+                    name: "CSD3: Comercio y Servicios Densidad Media",
+                    type: "vector",
+                    geojsonId: "comercio_y_servicios_densidad_media_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_ZonSec",
+                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendItem: "CSD3: Comercio y Servicios Densidad Media",
+                    defaultVisible: false,
+                    defaultZ: 764
+                  },
+                  {
+                    id: "Equipamiento_Publico_Cuautepec",
+                    name: "Equipamiento Público (EQ)",
+                    type: "vector",
+                    geojsonId: "Equipamiento_Publico_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_ZonSec",
+                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendItem: "Equipamiento Público (EQ)",
+                    defaultVisible: false,
+                    defaultZ: 765
+                  }
+                ]
+              },
+
+              // -------- Uso no Urbano --------
+              {
+                id: "cua_no_urb",
+                name: "Uso no Urbano",
+                layers: [
+                  {
+                    id: "Aprovechamiento_Cuautepec",
+                    name: "Aprovechamiento",
+                    type: "vector",
+                    geojsonId: "Aprovechamiento_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_NoUrbano",
+                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendItem: "Aprovechamiento",
+                    defaultVisible: false,
+                    defaultZ: 770
+                  },
+                  {
+                    id: "Aprovechamiento_conservacion_Cuautepec",
+                    name: "Aprovechamiento – Conservación",
+                    type: "vector",
+                    geojsonId: "Aprovechamiento_conservacion_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_NoUrbano",
+                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendItem: "Aprovechamiento – Conservación",
+                    defaultVisible: false,
+                    defaultZ: 771
+                  },
+                  {
+                    id: "Aprovechamiento_restauracion_Cuautepec",
+                    name: "Aprovechamiento – Restauración",
+                    type: "vector",
+                    geojsonId: "Aprovechamiento_restauracion_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_NoUrbano",
+                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendItem: "Aprovechamiento – Restauración",
+                    defaultVisible: false,
+                    defaultZ: 772
+                  },
+                  {
+                    id: "Conservacion_Cuautepec",
+                    name: "Conservación",
+                    type: "vector",
+                    geojsonId: "Conservacion_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_NoUrbano",
+                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendItem: "Conservación",
+                    defaultVisible: false,
+                    defaultZ: 773
+                  },
+                  {
+                    id: "Conservacion_restauracion_Cuautepec",
+                    name: "Conservación – Restauración",
+                    type: "vector",
+                    geojsonId: "Conservacion_restauracion_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_NoUrbano",
+                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendItem: "Conservación – Restauración",
+                    defaultVisible: false,
+                    defaultZ: 774
+                  },
+                  {
+                    id: "Restauracion_Cuautepec",
+                    name: "Restauración",
+                    type: "vector",
+                    geojsonId: "Restauracion_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_NoUrbano",
+                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendItem: "Restauración",
+                    defaultVisible: false,
+                    defaultZ: 775
+                  }
+                ]
+              },
+
+              // -------- Centros de Población --------
+              {
+                id: "cua_cp",
+                name: "Centro de Población",
+                layers: [
+                  {
+                    id: "CP_Cuautepec",
+                    name: "CP Cuautepec",
+                    type: "vector",
+                    geojsonId: "CP_Cuautepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_CP",
+                    legendTitle: "Cuautepec — Centros de Población",
+                    legendItem: "CP Cuautepec",
+                    defaultVisible: false,
+                    defaultZ: 780,
+                    meta: { asLine: true, weight: 3 }
+                  },
+                  {
+                    id: "CP_Santa_Elena_Paliseca",
+                    name: "CP Santa Elena Paliseca",
+                    type: "vector",
+                    geojsonId: "CP_Santa_Elena_Paliseca",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_CP",
+                    legendTitle: "Cuautepec — Centros de Población",
+                    legendItem: "CP Santa Elena Paliseca",
+                    defaultVisible: false,
+                    defaultZ: 781,
+                    meta: { asLine: true, weight: 3 }
+                  },
+                  {
+                    id: "CP_San_Lorenzo_Sayula",
+                    name: "CP San Lorenzo Sayula",
+                    type: "vector",
+                    geojsonId: "CP_San_Lorenzo_Sayula",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_CP",
+                    legendTitle: "Cuautepec — Centros de Población",
+                    legendItem: "CP San Lorenzo Sayula",
+                    defaultVisible: false,
+                    defaultZ: 782,
+                    meta: { asLine: true, weight: 3 }
+                  },
+                  {
+                    id: "CP_Cuautepec_Tecocomulco_JuarezF",
+                    name: "CP Tecocomulco de Juárez",
+                    type: "vector",
+                    geojsonId: "CP_Cuautepec_Tecocomulco_JuarezF",
+                    hasLegend: true,
+                    legendKey: "PMDU_Cuautepec_CP",
+                    legendTitle: "Cuautepec — Centros de Población",
+                    legendItem: "CP Tecocomulco de Juárez",
+                    defaultVisible: false,
+                    defaultZ: 783,
+                    meta: { asLine: true, weight: 3 }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
 
     ],
   },

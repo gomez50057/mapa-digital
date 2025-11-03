@@ -26,8 +26,8 @@ function buildZMVM(data, paneId) {
       const ent = feature?.properties?.NOM_ENT;
       const color =
         ent === "Hidalgo" ? "#BC955B" :
-        ent === "Estado de México" ? "#691B31" :
-        ent === "Ciudad de México" ? "#3a9680" : "orange";
+          ent === "Estado de México" ? "#691B31" :
+            ent === "Ciudad de México" ? "#3a9680" : "orange";
       return { fillColor: color, color, weight: 2.6, fillOpacity: 0.45 };
     },
     pointToLayer: (feat, latlng) => L.circleMarker(latlng, { pane: paneId, radius: 6 }),
@@ -175,8 +175,7 @@ function pmduPoly(data, paneId, ld, popupBuilder) {
 
 /* ====== Popup builders ====== */
 const popupPachuca = (p) =>
-  `<div class='PopupSubT'><b>Etapas de Crecimiento</b></div>${p?.Name_1 ? `<b>Estatus:</b> ${p.Name_1}<br>` : ""}${
-    p?.Ar ? `<b>Área:</b> ${fmtHa(p.Ar)}` : ""}`;
+  `<div class='PopupSubT'><b>Etapas de Crecimiento</b></div>${p?.Name_1 ? `<b>Estatus:</b> ${p.Name_1}<br>` : ""}${p?.Ar ? `<b>Área:</b> ${fmtHa(p.Ar)}` : ""}`;
 
 const popupTizayuca = (p) => {
   const keyMappings = { ZonSec: "Zona Sector" };
@@ -233,12 +232,30 @@ const popupEpaz = (p) => {
   return html;
 };
 
+/** Cuautepec — genérico: respeta Superficie, ignora campos de título duplicados */
+const popupCuautepec = (p) => {
+  const title = (p?.ZonSec || p?.ZonSec2022 || p?.Uso || p?.USO || "").toString().toUpperCase();
+  let html = `<div class='PopupSubT'><b>${title}</b></div>`;
+  for (const k in p) {
+    if (!Object.hasOwn(p, k)) continue;
+    if (["ZonSec", "ZonSec2022", "Uso", "USO", "NOMGEO"].includes(k)) continue;
+    let v = p[k];
+    if (/(Superficie|Área|Area)/i.test(k)) {
+      const n = Number(v); v = Number.isFinite(n) ? `${n.toFixed(3)} ha` : v;
+    }
+    html += `<b>${k}:</b> ${v}<br>`;
+  }
+  return html;
+};
+
+
 /* ====== Builders concretos ====== */
-const buildPachuca   = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupPachuca);
-const buildTizayuca  = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupTizayuca);
-const buildVilla     = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupVilla);
-const buildMineralRef= (data, paneId, ld) => pmduPoly(data, paneId, ld, popupMR);
-const buildEpaz      = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupEpaz);
+const buildPachuca = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupPachuca);
+const buildTizayuca = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupTizayuca);
+const buildVilla = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupVilla);
+const buildMineralRef = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupMR);
+const buildEpaz = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupEpaz);
+const buildCuautepec = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupCuautepec);
 
 /* ====== Util ====== */
 const mapFrom = (ids, fn) => ids.reduce((acc, id) => ((acc[id] = fn), acc), {});
@@ -270,33 +287,32 @@ const IDS_MR = [
 Object.assign(GEOJSON_REGISTRY, {
   // Zonificación Secundaria (Epazoyucan)
   "Habitacional_Densidad_Mínima_Epazoyucan": GEOJSON_REGISTRY.EPA_HD1,
-  "Habitacional_Densidad_Baja_Epazoyucan":   GEOJSON_REGISTRY.EPA_HD2,
-  "Habitacional_Densidad_Media_Epazoyucan":  GEOJSON_REGISTRY.EPA_HD3,
+  "Habitacional_Densidad_Baja_Epazoyucan": GEOJSON_REGISTRY.EPA_HD2,
+  "Habitacional_Densidad_Media_Epazoyucan": GEOJSON_REGISTRY.EPA_HD3,
   "comercio_y_servicios_densidad_minima_Epazoyucan": GEOJSON_REGISTRY.EPA_CSD1,
-  "comercio_y_servicios_densidad_baja_Epazoyucan":   GEOJSON_REGISTRY.EPA_CSD2,
-  "comercio_y_servicios_densidad_media_Epazoyucan":  GEOJSON_REGISTRY.EPA_CSD3,
+  "comercio_y_servicios_densidad_baja_Epazoyucan": GEOJSON_REGISTRY.EPA_CSD2,
+  "comercio_y_servicios_densidad_media_Epazoyucan": GEOJSON_REGISTRY.EPA_CSD3,
   "Industria_Ligera_Epazoyucan": GEOJSON_REGISTRY.EPA_IL,
-  "agroindustria_Epazoyucan":    GEOJSON_REGISTRY.EPA_AG,
-  "Equipamiento_Publico_Epazoyucan":  GEOJSON_REGISTRY.EPA_EQ,
-  "Equipamiento_Privado_Epazoyucan":  GEOJSON_REGISTRY.EPA_EQP,
+  "agroindustria_Epazoyucan": GEOJSON_REGISTRY.EPA_AG,
+  "Equipamiento_Publico_Epazoyucan": GEOJSON_REGISTRY.EPA_EQ,
+  "Equipamiento_Privado_Epazoyucan": GEOJSON_REGISTRY.EPA_EQP,
   "poligonoDeActuacion_Epazoyuca_Epazoyucan": GEOJSON_REGISTRY.EPA_PA,
 
   // Uso no Urbano (Epazoyucan)
-  "Aprovechamiento_Epazoyucan":               GEOJSON_REGISTRY.EPA_APROV,
-  "Aprovechamiento_conservacion_Epazoyucan":  GEOJSON_REGISTRY.EPA_APROV_CONS,
-  "Aprovechamiento_restauracion_Epazoyucan":  GEOJSON_REGISTRY.EPA_APROV_RES,
-  "Conservacion_Epazoyuca":                   GEOJSON_REGISTRY.EPA_CONS,
-  "Conservacion_restauracion_Epazoyucan":     GEOJSON_REGISTRY.EPA_CONS_RES,
-  "Restauracion_Epazoyucan":                  GEOJSON_REGISTRY.EPA_RES,
+  "Aprovechamiento_Epazoyucan": GEOJSON_REGISTRY.EPA_APROV,
+  "Aprovechamiento_conservacion_Epazoyucan": GEOJSON_REGISTRY.EPA_APROV_CONS,
+  "Aprovechamiento_restauracion_Epazoyucan": GEOJSON_REGISTRY.EPA_APROV_RES,
+  "Conservacion_Epazoyuca": GEOJSON_REGISTRY.EPA_CONS,
+  "Conservacion_restauracion_Epazoyucan": GEOJSON_REGISTRY.EPA_CONS_RES,
+  "Restauracion_Epazoyucan": GEOJSON_REGISTRY.EPA_RES,
 
   // Centros de Población (Epazoyucan)
-  "CP_Epazoyucan":      GEOJSON_REGISTRY.EPA_CP_EPAZ,
+  "CP_Epazoyucan": GEOJSON_REGISTRY.EPA_CP_EPAZ,
   "CP_San_Juan_Tizahuapan": GEOJSON_REGISTRY.EPA_CP_SJT,
-  "CP_Santa_Mónica":    GEOJSON_REGISTRY.EPA_CP_SM,
-  "CP_Xochihuacán":     GEOJSON_REGISTRY.EPA_CP_XOCHI,
+  "CP_Santa_Mónica": GEOJSON_REGISTRY.EPA_CP_SM,
+  "CP_Xochihuacán": GEOJSON_REGISTRY.EPA_CP_XOCHI,
 });
 
-/* Reemplaza tu IDS_EPAZ por ESTE (coincide con layersTree) */
 const IDS_EPAZ = [
   // Zonificación Secundaria
   "Habitacional_Densidad_Mínima_Epazoyucan",
@@ -326,6 +342,53 @@ const IDS_EPAZ = [
   "CP_Xochihuacán"
 ];
 
+Object.assign(GEOJSON_REGISTRY, {
+  // Zonificación Secundaria
+  "Habitacional_Densidad_Mínima_Cuautepec": GEOJSON_REGISTRY.CUA_HD1,
+  "Habitacional_Densidad_Baja_Cuautepec": GEOJSON_REGISTRY.CUA_HD2,
+  "comercio_y_servicios_densidad_minima_Cuautepec": GEOJSON_REGISTRY.CUA_CSD1,
+  "comercio_y_servicios_densidad_baja_Cuautepec": GEOJSON_REGISTRY.CUA_CSD2,
+  "comercio_y_servicios_densidad_media_Cuautepec": GEOJSON_REGISTRY.CUA_CSD3,
+  "Equipamiento_Publico_Cuautepec": GEOJSON_REGISTRY.CUA_EQ,
+
+  // Uso no Urbano
+  "Aprovechamiento_Cuautepec": GEOJSON_REGISTRY.CUA_APROV,
+  "Aprovechamiento_conservacion_Cuautepec": GEOJSON_REGISTRY.CUA_APROV_CONS,
+  "Aprovechamiento_restauracion_Cuautepec": GEOJSON_REGISTRY.CUA_APROV_RES,
+  "Conservacion_Cuautepec": GEOJSON_REGISTRY.CUA_CONS,
+  "Conservacion_restauracion_Cuautepec": GEOJSON_REGISTRY.CUA_CONS_RES,
+  "Restauracion_Cuautepec": GEOJSON_REGISTRY.CUA_RES,
+
+  // Centros de Población (usamos los mismos ids de las capas)
+  "CP_Cuautepec": GEOJSON_REGISTRY.CUA_CP_CUAUTEPEC,
+  "CP_Santa_Elena_Paliseca": GEOJSON_REGISTRY.CUA_CP_SANTA_ELENA_PALISECA,
+  "CP_San_Lorenzo_Sayula": GEOJSON_REGISTRY.CUA_CP_SAN_LORENZO_SAYULA,
+  "CP_Cuautepec_Tecocomulco_JuarezF": GEOJSON_REGISTRY.CUA_CP_TECOCOMULCO_JUAREZF
+});
+
+
+// ====== IDs Cuautepec para mapFrom ======
+const IDS_CUAU = [
+  "Habitacional_Densidad_Mínima_Cuautepec",
+  "Habitacional_Densidad_Baja_Cuautepec",
+  "comercio_y_servicios_densidad_minima_Cuautepec",
+  "comercio_y_servicios_densidad_baja_Cuautepec",
+  "comercio_y_servicios_densidad_media_Cuautepec",
+  "Equipamiento_Publico_Cuautepec",
+
+  "Aprovechamiento_Cuautepec",
+  "Aprovechamiento_conservacion_Cuautepec",
+  "Aprovechamiento_restauracion_Cuautepec",
+  "Conservacion_Cuautepec",
+  "Conservacion_restauracion_Cuautepec",
+  "Restauracion_Cuautepec",
+
+  "CP_Cuautepec",
+  "CP_Santa_Elena_Paliseca",
+  "CP_San_Lorenzo_Sayula",
+  "CP_Cuautepec_Tecocomulco_JuarezF"
+];
+
 /* ====== Export Builders ====== */
 export const LAYER_BUILDERS = {
   // Info general / Escuelas / Zonas Metro
@@ -342,4 +405,5 @@ export const LAYER_BUILDERS = {
   ...mapFrom(IDS_VILLA, buildVilla),
   ...mapFrom(IDS_MR, buildMineralRef),
   ...mapFrom(IDS_EPAZ, buildEpaz),
+  ...mapFrom(IDS_CUAU, buildCuautepec),
 };

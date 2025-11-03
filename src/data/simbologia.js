@@ -114,6 +114,33 @@ export const SYMBOLOGY = {
   ]
 };
 
+// ===== Cuautepec de Hinojosa =====
+SYMBOLOGY.PMDU_Cuautepec_ZonSec = [
+  { color: "#FFFFDC", text: "Habitacional Densidad Mínima (HD1)" },
+  { color: "#FFFFB7", text: "Habitacional Densidad Baja (HD2)" },
+  { color: "#F8ECD4", text: "CSD1: Comercio y Servicios Densidad Mínima" },
+  { color: "#F6DBAB", text: "CSD2: Comercio y Servicios Densidad Baja" },
+  { color: "#F8B396", text: "CSD3: Comercio y Servicios Densidad Media" },
+  { color: "#FDB3E6", text: "Equipamiento Público (EQ)" }
+];
+
+SYMBOLOGY.PMDU_Cuautepec_NoUrbano = [
+  { color: "#D1FEB9", text: "Aprovechamiento" },
+  { color: "#ACFDA0", text: "Aprovechamiento – Conservación" },
+  { color: "#ACD497", text: "Aprovechamiento – Restauración" },
+  { color: "#D1FBBC", text: "Conservación" },
+  { color: "#7FD4C0", text: "Conservación – Restauración" },
+  { color: "#B5DCB0", text: "Restauración" }
+];
+
+SYMBOLOGY.PMDU_Cuautepec_CP = [
+  { color: "#E69B9C", text: "CP Cuautepec" },
+  { color: "#9500D8", text: "CP Santa Elena Paliseca" },
+  { color: "#ED570E", text: "CP San Lorenzo Sayula" },
+  { color: "#DE04AC", text: "CP Tecocomulco de Juárez" }
+];
+
+
 // Alias en español para compatibilidad con importaciones antiguas
 export const SIMBOLOGIA = SYMBOLOGY;
 

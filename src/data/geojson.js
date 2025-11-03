@@ -61,6 +61,36 @@ import {
 } from "@/capas/zonas metropolitanas/info basica/PMDU/epazoyucan/zonificacion/zon_Epazoyuca";
 
 
+// Cuautepec de Hinojosa 
+// Centros de Población
+import {
+  CP_Cuautepec as CUA_CP_CUAUTEPEC_DATA,
+  CP_San_Lorenzo_Sayula as CUA_CP_SAN_LORENZO_SAYULA_DATA,
+  CP_Santa_Elena_Paliseca as CUA_CP_SANTA_ELENA_PALISECA_DATA,
+  CP_Cuautepec_Tecocomulco_JuarezF as CUA_CP_TECOCOMULCO_JUAREZF_DATA
+} from "@/capas/zonas metropolitanas/info basica/PMDU/cuautepecDeHinojosa/centrosdePoblacion/CP_Cuautepec";
+
+// Zonificación Secundaria
+import {
+  HD1 as CUA_HD1_DATA,
+  HD2 as CUA_HD2_DATA,
+  CSD1 as CUA_CSD1_DATA,
+  CSD2 as CUA_CSD2_DATA,
+  CSD3 as CUA_CSD3_DATA,
+  EQ as CUA_EQ_DATA,
+  // drenPluvial_Cuautepec // si lo usas, impórtalo aquí
+} from "@/capas/zonas metropolitanas/info basica/PMDU/cuautepecDeHinojosa/zonificacion/zon_Cuautepec";
+
+// Uso no Urbano
+import {
+  APROV_Cuautepec as CUA_APROV_DATA,
+  APROV_CONS_Cuautepec as CUA_APROV_CONS_DATA,
+  APROV_RES_Cuautepec as CUA_APROV_RES_DATA,
+  CONS_Cuautepec as CUA_CONS_DATA,
+  CONS_RES_Cuautepec as CUA_CONS_RES_DATA,
+  RES_Cuautepec as CUA_RES_DATA
+} from "@/capas/zonas metropolitanas/info basica/PMDU/cuautepecDeHinojosa/sueloNoUrbanizable/SNU_Cuautepec";
+
 
 export const GEOJSON_REGISTRY = {
   HGO_INFO_GEN: HgoInfoGen,
@@ -119,6 +149,31 @@ export const GEOJSON_REGISTRY = {
   EPA_CP_EPAZ: EPA_CP_EPAZ_DATA,
   EPA_CP_SJT: EPA_CP_SJT_DATA,
   EPA_CP_SM: EPA_CP_SM_DATA,
-  EPA_CP_XOCHI: EPA_CP_XOCHI_DATA
+  EPA_CP_XOCHI: EPA_CP_XOCHI_DATA,
+
+  /* Cuautepec de Hinojosa */
+  // Zonificación Secundaria
+  CUA_HD1: CUA_HD1_DATA,
+  CUA_HD2: CUA_HD2_DATA,
+  CUA_CSD1: CUA_CSD1_DATA,
+  CUA_CSD2: CUA_CSD2_DATA,
+  CUA_CSD3: CUA_CSD3_DATA,
+  CUA_EQ: CUA_EQ_DATA,
+
+  // Uso no Urbano
+  CUA_APROV: CUA_APROV_DATA,
+  CUA_APROV_CONS: CUA_APROV_CONS_DATA,
+  CUA_APROV_RES: CUA_APROV_RES_DATA,
+  CUA_CONS: CUA_CONS_DATA,
+  CUA_CONS_RES: CUA_CONS_RES_DATA,
+  CUA_RES: CUA_RES_DATA,
+
+  // Centro de Población
+  CUA_CP_CUAUTEPEC: CUA_CP_CUAUTEPEC_DATA,
+  CUA_CP_SANTA_ELENA_PALISECA: CUA_CP_SANTA_ELENA_PALISECA_DATA,
+  CUA_CP_SAN_LORENZO_SAYULA: CUA_CP_SAN_LORENZO_SAYULA_DATA,
+  CUA_CP_TECOCOMULCO_JUAREZF: CUA_CP_TECOCOMULCO_JUAREZF_DATA,
+
+
 
 };
