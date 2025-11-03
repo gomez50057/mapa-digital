@@ -1493,7 +1493,7 @@ export const LAYERS_TREE = [
           {
             id: "tepeji_pmdu",
             name: "PMDU",
-            class: 3, // <<< lo que pediste: PMDU -- class 3
+            class: 3,
             children: [
               /* ==================== Zonificación Secundaria ==================== */
               {
@@ -1509,7 +1509,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "CU",
+                    legendItem: "Centro Urbano (CU)",
                     defaultVisible: false,
                   },
                   {
@@ -1521,7 +1521,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "SCU",
+                    legendItem: "Subcentro Urbano (SCU)",
                     defaultVisible: false,
                   },
                   {
@@ -1533,7 +1533,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "CB",
+                    legendItem: "Centro de Barrio (CB)",
                     defaultVisible: false,
                   },
                   {
@@ -1545,31 +1545,31 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "CCSA",
+                    legendItem: "Corredor Comercial y de Servicios Alta Intensidad (CCSA)",
                     defaultVisible: false,
                   },
                   {
                     id: "Corredor_Comercial_Servicios_Mediana_Tepeji",
-                    name: "Corredor Comercial y de Servicios Mediana Intensidad (CCSMI)",
+                    name: "Corredor Comercial y de Servicios Mediana Intensidad (CCSM)",
                     type: "vector",
                     geojsonId: "CCSMI_Tepeji",
                     defaultZ: 520,
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "CCSMI",
+                    legendItem: "Corredor Comercial y de Servicios Mediana Intensidad (CCSM)",
                     defaultVisible: false,
                   },
                   {
                     id: "Corredor_Comercial_Servicios_Baja_Tepeji",
-                    name: "Corredor Comercial y de Servicios Baja Intensidad (CCSBI)",
+                    name: "Corredor Comercial y de Servicios Baja Intensidad (CCSB)",
                     type: "vector",
                     geojsonId: "CCSBI_Tepeji",
                     defaultZ: 520,
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "CCSB",
+                    legendItem: "Corredor Comercial y de Servicios Baja Intensidad (CCSB)",
                     defaultVisible: false,
                   },
                   {
@@ -1581,7 +1581,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "HAD",
+                    legendItem: "Habitacional Alta Densidad (HAD)",
                     defaultVisible: false,
                   },
                   {
@@ -1593,7 +1593,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "HMD",
+                    legendItem: "Habitacional Mediana Densidad (HMD)",
                     defaultVisible: false,
                   },
                   {
@@ -1605,7 +1605,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "HBD",
+                    legendItem: "Habitacional Baja Densidad (HBD)",
                     defaultVisible: false,
                   },
                   {
@@ -1617,7 +1617,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "IL",
+                    legendItem: "Industria Ligera (IL)",
                     defaultVisible: false,
                   },
                   {
@@ -1629,7 +1629,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "IM",
+                    legendItem: "Industria Mediana (IM)",
                     defaultVisible: false,
                   },
                   {
@@ -1641,7 +1641,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_Tepeji_ZonSec",
                     legendTitle: "Zonificación Secundaria — Tepeji del Río de Ocampo",
-                    legendItem: "IP",
+                    legendItem: "Industria Pesada (IP)",
                     defaultVisible: false,
                   },
                 ],
@@ -1878,7 +1878,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_SantiagoTLG_ZonSec",
                     legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
-                    legendItem: "HD1",
+                    legendItem: "Habitacional Densidad Mínima (HD1)",
                     defaultVisible: false,
                     defaultZ: 820
                   },
@@ -1890,7 +1890,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_SantiagoTLG_ZonSec",
                     legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
-                    legendItem: "HD2",
+                    legendItem: "Habitacional Densidad Baja (HD2)",
                     defaultVisible: false,
                     defaultZ: 821
                   },
@@ -1902,7 +1902,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_SantiagoTLG_ZonSec",
                     legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
-                    legendItem: "HD3",
+                    legendItem: "Habitacional Densidad Media (HD3)",
                     defaultVisible: false,
                     defaultZ: 822
                   },
@@ -1914,7 +1914,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_SantiagoTLG_ZonSec",
                     legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
-                    legendItem: "CSD1",
+                    legendItem: "Corredor Comercial y de Servicios Densidad Mínima (CSD1)",
                     defaultVisible: false,
                     defaultZ: 823
                   },
@@ -1926,7 +1926,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_SantiagoTLG_ZonSec",
                     legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
-                    legendItem: "CSD2",
+                    legendItem: "Corredor Comercial y de Servicios Densidad Baja (CSD2)",
                     defaultVisible: false,
                     defaultZ: 824
                   },
@@ -1938,7 +1938,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_SantiagoTLG_ZonSec",
                     legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
-                    legendItem: "CSD3",
+                    legendItem: "Corredor Comercial y de Servicios Densidad Media (CSD3)",
                     defaultVisible: false,
                     defaultZ: 825
                   },
@@ -1950,7 +1950,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_SantiagoTLG_ZonSec",
                     legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
-                    legendItem: "IL",
+                    legendItem: "Industria Ligera (IL)",
                     defaultVisible: false,
                     defaultZ: 826
                   },
@@ -1962,7 +1962,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_SantiagoTLG_ZonSec",
                     legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
-                    legendItem: "EQ",
+                    legendItem: "Equipamiento Público (EQ)",
                     defaultVisible: false,
                     defaultZ: 827
                   },
@@ -1974,7 +1974,7 @@ export const LAYERS_TREE = [
                     hasLegend: true,
                     legendKey: "PMDU_SantiagoTLG_ZonSec",
                     legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
-                    legendItem: "PA",
+                    legendItem: "Polígono de Actuación (PA)",
                     defaultVisible: false,
                     defaultZ: 828
                   },
