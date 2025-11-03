@@ -1,35 +1,47 @@
 "use client";
 import styles from "./LegendDock.module.css";
-import { SIMBOLOGIA } from "@/data/simbologia";
+import { SYMBOLOGY } from "@/data/simbologia";
 
+/**
+ * legends: Array de objetos con al menos { legendKey, title? }
+ *   - legendKey: clave para buscar en SYMBOLOGY
+ *   - title: título a mostrar en la tarjeta (fallback a legendKey)
+ */
 export default function LegendDock({ legends = [] }) {
-  if (!legends.length) return null;
+  if (!Array.isArray(legends) || legends.length === 0) return null;
+
   return (
-    <aside className={styles.legendDock} aria-label="Leyendas activas">
-      <div className={styles.legendList} role="list">
-        {legends.map(lg => {
-          const rows = SIMBOLOGIA[lg.legendKey] || [];
-          return (
-            <section key={lg.id} className={styles.legendCard} role="listitem">
-              {lg.legendTitle && <h4 className={styles.legendTitle}>{lg.legendTitle}</h4>}
-              {rows.length ? (
-                <table className={styles.table}>
-                  <tbody>
-                  {rows.map((r,i)=>(
-                    <tr key={i}>
-                      <td><span className={styles.color} style={{background:r.color}} /></td>
-                      <td>{r.text}</td>
-                    </tr>
-                  ))}
-                  </tbody>
-                </table>
-              ) : (
-                <div className={styles.empty}>Sin simbología definida</div>
-              )}
-            </section>
-          );
-        })}
-      </div>
-    </aside>
+    <div className={styles.dock} aria-live="polite">
+      {legends.map((g) => {
+        const key = g.legendKey || g.key || g.id;
+        const items = SYMBOLOGY[key] || [];
+        const title = g.title || g.legendTitle || g.name || key;
+
+        // Si no hay ítems, igual mostramos el título (pero sin lista).
+        return (
+          <section key={key} className={styles.card}>
+            <header className={styles.header}>
+              <span className={styles.headerDot} />
+              <h4 className={styles.title}>{title}</h4>
+            </header>
+
+            {items.length > 0 && (
+              <ul className={styles.list}>
+                {items.map((it, i) => (
+                  <li key={i} className={styles.row}>
+                    <span
+                      className={styles.swatch}
+                      style={{ "--swatch": it.color }}
+                      aria-hidden="true"
+                    />
+                    <span className={styles.label}>{it.text}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        );
+      })}
+    </div>
   );
 }

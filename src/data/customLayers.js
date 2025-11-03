@@ -1,6 +1,14 @@
 // src/data/customLayers.js
 import L from "leaflet";
 
+/* ===== Helpers ===== */
+const asNum = (v) => (typeof v === "number" ? v : Number(v));
+
+const fmtHa = (v) => {
+  const n = asNum(v);
+  return Number.isFinite(n) ? `${n.toFixed(3)} ha` : "—";
+};
+
 /* ==================== Utils seguros ==================== */
 const fmtNum = (v) => {
   const n = typeof v === "number" ? v : Number(v);
@@ -216,6 +224,111 @@ export function buildEscPrivLayer({ data, paneId, layerDef }) {
   });
 }
 
+
+function pmduPoly(data, paneId, ld, popupBuilder) {
+  const color = ld?.meta?.color ?? "#888";
+  return L.geoJSON(data, {
+    pane: paneId,
+    style: () => ({
+      fillColor: color,
+      fillOpacity: 0.5,
+      color: "transparent",
+      weight: 4,
+    }),
+    onEachFeature: (feature, layer) => {
+      const p = feature?.properties ?? {};
+      if (popupBuilder) {
+        layer.bindPopup(popupBuilder(p));
+      }
+    },
+  });
+}
+
+/* ====== Popup builders (siguen tu lógica) ====== */
+
+// Pachuca — (tenías el popup comentado; dejamos simple o añade lo que gustes)
+const popupPachuca = (p) =>
+  `<div class='PopupSubT'><b>Etapas de Crecimiento</b></div>${p?.Name_1 ? `<b>Estatus:</b> ${p.Name_1}<br>` : ""
+  }${p?.Ar ? `<b>Área:</b> ${fmtHa(p.Ar)}` : ""}`;
+
+// Tizayuca — usa mapeos y formateo de Superficie + “Plazo” especial
+const popupTizayuca = (p) => {
+  const keyMappings = { ZonSec: "Zona Sector" };
+  let html = `<div class='PopupSubT'><b>${(p?.ZonSec2022 || "").toString().toUpperCase()}</b></div>`;
+  for (const k in p) {
+    if (!Object.hasOwn(p, k) || k === "ZonSec2022") continue;
+    let v = p[k];
+    const display = keyMappings[k] || k;
+    if (k === "Superficie") v = fmtHa(v);
+    if (k === "Plazo") {
+      html += `<b>${display}:</b> ${v}<p class='PopText'> Plazo</p><br>`;
+    } else {
+      html += `<b>${display}:</b> ${v}<br>`;
+    }
+  }
+  return html;
+};
+
+// Villa Tezontepec — ignora NOMGEO; formatea Superficie
+const popupVilla = (p) => {
+  const keyMappings = { ZonSec: "Zona Sector" };
+  let html = `<div class='PopupSubT'><b>${(p?.ZonSec || "").toString().toUpperCase()}</b></div>`;
+  for (const k in p) {
+    if (!Object.hasOwn(p, k) || k === "ZonSec" || k === "NOMGEO") continue;
+    let v = p[k];
+    const display = keyMappings[k] || k;
+    if (k === "Superficie") v = fmtHa(v);
+    html += `<b>${display}:</b> ${v}<br>`;
+  }
+  return html;
+};
+
+// Mineral de la Reforma — muestra “Etapa” sólo si no es null; formatea Superficie
+const popupMR = (p) => {
+  let html = `<div class='PopupSubT'><b>${(p?.ZonSec || "").toString().toUpperCase()}</b></div>`;
+  for (const k in p) {
+    if (!Object.hasOwn(p, k)) continue;
+    let v = p[k];
+    if (k === "Superficie") v = fmtHa(v);
+    if (k === "Etapa" && (v === null || v === undefined)) continue;
+    html += `<b>${k}:</b> ${v}<br>`;
+  }
+  return html;
+};
+
+/* ====== Builders concretos (mismo estilo, popup por municipio) ====== */
+const buildPachuca = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupPachuca);
+const buildTizayuca = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupTizayuca);
+const buildVilla = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupVilla);
+const buildMineralRef = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupMR);
+
+/* ====== Util: genera mapa { id: builder } desde arreglo de ids ====== */
+const mapFrom = (ids, fn) => ids.reduce((acc, id) => ((acc[id] = fn), acc), {});
+
+/* ====== IDs por municipio (coinciden con layer.id y geojsonId) ====== */
+const IDS_PACHUCA = ["SUCLargoP", "SULargoP", "SUMedianoP", "SUCMedianoP"];
+
+const IDS_TIZAYUCA = [
+  "AgriTec", "AgriInd", "CRA", "CUMBD", "CUMMD", "CAGUA", "EUrb",
+  "HDA_Unifamiliar", "HDB_Unifamiliar", "HDM_Unifamiliar", "HDMA_Unifamiliar", "HDMB_Unifamiliar",
+  "HDMA_MdTC", "HDmA2", "HDmB_Uni", "IBI", "IGI", "IMI", "IUrb", "mixto", "ParqueHid", "RTF"
+];
+
+const IDS_VILLA = [
+  "Villa_TUA", "Villa_agroindustria", "Villa_areaAgri", "Villa_golf", "Villa_declaratoria",
+  "Villa_equipamiento", "Villa_habitacional", "Villa_parAcu", "Villa_parTer",
+  "Villa_PLATAH", "Villa_servicios", "Villa_mixto", "Villa_ZAV", "Villa_ZPE"
+];
+
+const IDS_MR = [
+  "MR_EVP", "MR_CUM", "MR_CS", "MR_EI", "MR_ER", "MR_EVA",
+  "MR_H05", "MR_H1", "MR_H2", "MR_H3", "MR_H4", "MR_H5", "MR_H6", "MR_H7",
+  "MR_ILNC", "MR_PA", "MR_PPDU", "MR_PAT", "MR_PEF", "MR_PPI",
+  // "MR_Puente_bimodal","MR_Puente_multimodal",
+  "MR_Reserva", "MR_Servicios", "MR_SUM", "MR_ZSEH", "MR_ZSERPCE"
+];
+
+
 export const LAYER_BUILDERS = {
   "hgo_info_gen": (data, paneId, ld) => buildInfoHgoLayer({ data, paneId, color: "#fff", layerName: ld?.name }),
   "esc_priv_ms": (data, paneId, ld) => buildEscPrivLayer({ data, paneId, layerDef: ld }),
@@ -233,4 +346,10 @@ export const LAYER_BUILDERS = {
   // Metropolitana Tulancingo
   zmtulancingo_info: (data, paneId /*, ld */) =>
     buildMetropolitana(data, paneId, "#241E4E", "transparent", "Zona Metropolitana"),
+
+
+  ...mapFrom(IDS_PACHUCA, buildPachuca),
+  ...mapFrom(IDS_TIZAYUCA, buildTizayuca),
+  ...mapFrom(IDS_VILLA, buildVilla),
+  ...mapFrom(IDS_MR, buildMineralRef),
 };
