@@ -55,10 +55,11 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
   const regionBoundsRef = useRef(null);
 
   const groupRef = useRef({});        // { [layerId]: L.Layer }
-  const paneRef  = useRef({});        // { [paneId]: true }
+  const paneRef = useRef({});        // { [paneId]: true }
   const rendererRef = useRef({});     // { [paneId]: L.SVG }
-  const lastZRef = useRef({});        // { [layerId]: number } (para saber cuándo reconstruir)
+  const lastZRef = useRef({});        // { [layerId]: number }
   const lastPaneRef = useRef({});     // { [layerId]: paneId }
+  const lastOnRef = useRef(new Set()); // <- para detectar capas recién encendidas
 
   // === Orden por z (no altera hooks)
   const visibleDefs = useMemo(() => {
@@ -103,9 +104,9 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
       ...commonTileOpts, subdomains: ["mt0", "mt1", "mt2", "mt3"],
     }).addTo(map);
     const dark = L.tileLayer("https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png", { ...commonTileOpts });
-    const sat  = L.tileLayer("http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", { ...commonTileOpts, subdomains: ["mt0","mt1","mt2","mt3"] });
-    const rel  = L.tileLayer("http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}", { ...commonTileOpts, subdomains: ["mt0","mt1","mt2","mt3"] });
-    const carr = L.tileLayer("http://{s}.google.com/vt/lyrs=h&x={x}&y={y}&z={z}", { ...commonTileOpts, subdomains: ["mt0","mt1","mt2","mt3"] });
+    const sat = L.tileLayer("http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", { ...commonTileOpts, subdomains: ["mt0", "mt1", "mt2", "mt3"] });
+    const rel = L.tileLayer("http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}", { ...commonTileOpts, subdomains: ["mt0", "mt1", "mt2", "mt3"] });
+    const carr = L.tileLayer("http://{s}.google.com/vt/lyrs=h&x={x}&y={y}&z={z}", { ...commonTileOpts, subdomains: ["mt0", "mt1", "mt2", "mt3"] });
 
     L.control.layers(
       {
@@ -129,6 +130,7 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
       rendererRef.current = {};
       lastZRef.current = {};
       lastPaneRef.current = {};
+      lastOnRef.current = new Set();
       regionBoundsRef.current = null;
     };
   }, []);
@@ -164,7 +166,7 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
     const data = GEOJSON_REGISTRY[ld.geojsonId];
     const builder = LAYER_BUILDERS[ld.id];
     if (builder) {
-      // Asegúrate de que tu builder respete pane/renderer si lo usas
+      // builder personalizado; debe respetar pane/renderer si aplica
       return builder(data, paneId, ld);
     }
     return L.geoJSON(data, {
@@ -175,7 +177,7 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
       style: (feature) => {
         const t = feature?.geometry?.type || "";
         if (t.includes("Polygon")) return { color: "#146C94", weight: 1, fillColor: "#19A7CE", fillOpacity: 0.25 };
-        if (t.includes("Line"))    return { color: "#E76F51", weight: 3 };
+        if (t.includes("Line")) return { color: "#E76F51", weight: 3 };
         return { color: "#6A994E", weight: 3 };
       },
       onEachFeature: (feature, lyr) => {
@@ -188,18 +190,25 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
     });
   };
 
-  // === Render / update
+  // === Render / update (con zoom a PMDU recién prendidas)
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
 
     const REGION_BOUNDS = regionBoundsRef.current || FALLBACK_BOUNDS_HGO_REGION;
 
+    // Capas recién encendidas
+    const currentOn = new Set([...selectedLayers.keys()]);
+    const newlyOnIds = [...currentOn].filter((id) => !lastOnRef.current.has(id));
+
+    // Bounds acumulados de PMDU recién encendidas
+    let pmduUnion = null;
+
     visibleDefs.forEach((ld) => {
       const zRaw = zOverrides.get(ld.id) ?? ld.defaultZ ?? 400;
       const z = clampZ(zRaw);
 
-      // VECTOR: cada z tiene su propio pane y renderer; recrea si el z cambió
+      // VECTOR
       if (ld.type === "vector") {
         const paneId = vecPaneIdFromZ(z);
         ensurePane(map, paneId, z);
@@ -209,7 +218,7 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
         const lastPane = lastPaneRef.current[ld.id];
         let layer = groupRef.current[ld.id];
 
-        // Si no existe o cambió la z → reconstruye en el nuevo pane
+        // Rebuild si no existe o cambió la z/pane
         if (!layer || lastZ !== z || lastPane !== paneId) {
           if (layer && map.hasLayer(layer)) map.removeLayer(layer);
           layer = buildVectorLayer(ld, paneId, renderer);
@@ -218,12 +227,26 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
           lastPaneRef.current[ld.id] = paneId;
           layer.addTo(map);
         } else {
-          // existe y z no cambió → asegúrate que esté en el mapa
           if (!map.hasLayer(layer)) layer.addTo(map);
+        }
+
+        // Si esta capa vectorial se acaba de prender y es PMDU_* → añadir a la unión
+        if (
+          newlyOnIds.includes(ld.id) &&
+          typeof ld.legendKey === "string" &&
+          ld.legendKey.startsWith("PMDU_") &&
+          typeof groupRef.current[ld.id]?.getBounds === "function"
+        ) {
+          const b = groupRef.current[ld.id].getBounds?.();
+          if (b && b.isValid && b.isValid()) {
+            pmduUnion = pmduUnion
+              ? pmduUnion.extend(b)
+              : L.latLngBounds(b.getSouthWest(), b.getNorthEast());
+          }
         }
       }
 
-      // TILE: pane propio por capa, setZIndex
+      // TILE
       if (ld.type === "tile") {
         const paneId = ensureTilePane(map, ld.id, z);
         let layer = groupRef.current[ld.id];
@@ -253,11 +276,23 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
         if (layer && map.hasLayer(layer)) map.removeLayer(layer);
       }
     });
+
+    // Volar a la unión de bounds PMDU recién encendidas
+    if (pmduUnion && pmduUnion.isValid && pmduUnion.isValid()) {
+      map.flyToBounds(pmduUnion, {
+        padding: [40, 40],
+        maxZoom: 13,
+        duration: 0.7,
+      });
+    }
+
+    // Snapshot de ON para el siguiente render
+    lastOnRef.current = currentOn;
   }, [visibleDefs, selectedLayers, zOverrides]);
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
-      <div ref={mapDivRef} id="map"  />
+      <div ref={mapDivRef} id="map" style={{ width: "100%", height: "100%" }} />
       <LegendDock legends={legends} />
     </div>
   );

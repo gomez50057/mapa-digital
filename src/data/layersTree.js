@@ -1,4 +1,3 @@
-// src/data/layersTree.js
 export const LAYERS_TREE = [
   {
     id: "cat_hidalgo",
