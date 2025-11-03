@@ -1,7 +1,5 @@
 import "@/styles/globals.css";
 
-
-// src/app/layout.js (o donde declares metadata)
 export const metadata = {
   applicationName: 'geogeoconnect',
   title: {
