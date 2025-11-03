@@ -59,7 +59,7 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
   const rendererRef = useRef({});     // { [paneId]: L.SVG }
   const lastZRef = useRef({});        // { [layerId]: number }
   const lastPaneRef = useRef({});     // { [layerId]: paneId }
-  const lastOnRef = useRef(new Set()); // <- para detectar capas recién encendidas
+  const lastOnRef = useRef(new Set()); // snapshot de capas ON (para detectar recién encendidas)
 
   // === Orden por z (no altera hooks)
   const visibleDefs = useMemo(() => {
@@ -190,7 +190,7 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
     });
   };
 
-  // === Render / update (con zoom a PMDU recién prendidas)
+  // === Render / update (con zoom para TODAS las capas recién encendidas)
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -201,8 +201,8 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
     const currentOn = new Set([...selectedLayers.keys()]);
     const newlyOnIds = [...currentOn].filter((id) => !lastOnRef.current.has(id));
 
-    // Bounds acumulados de PMDU recién encendidas
-    let pmduUnion = null;
+    // Unión de bounds de todas las capas recién encendidas (vectoriales)
+    let unionBounds = null;
 
     visibleDefs.forEach((ld) => {
       const zRaw = zOverrides.get(ld.id) ?? ld.defaultZ ?? 400;
@@ -230,17 +230,12 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
           if (!map.hasLayer(layer)) layer.addTo(map);
         }
 
-        // Si esta capa vectorial se acaba de prender y es PMDU_* → añadir a la unión
-        if (
-          newlyOnIds.includes(ld.id) &&
-          typeof ld.legendKey === "string" &&
-          ld.legendKey.startsWith("PMDU_") &&
-          typeof groupRef.current[ld.id]?.getBounds === "function"
-        ) {
+        // Si esta capa vectorial se acaba de prender → añadir sus bounds a la unión
+        if (newlyOnIds.includes(ld.id) && typeof groupRef.current[ld.id]?.getBounds === "function") {
           const b = groupRef.current[ld.id].getBounds?.();
           if (b && b.isValid && b.isValid()) {
-            pmduUnion = pmduUnion
-              ? pmduUnion.extend(b)
+            unionBounds = unionBounds
+              ? unionBounds.extend(b)
               : L.latLngBounds(b.getSouthWest(), b.getNorthEast());
           }
         }
@@ -266,6 +261,15 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
           if (!map.hasLayer(layer)) layer.addTo(map);
           if (typeof layer.setZIndex === "function") layer.setZIndex(z);
         }
+
+        // Opcional: si quieres que al encender un tile sin bounds específicos
+        // también haga zoom, puedes usar REGION_BOUNDS o un `ld.tileBounds`.
+        // if (newlyOnIds.includes(ld.id)) {
+        //   const b = ld.tileBounds || REGION_BOUNDS;
+        //   if (b && b.isValid && b.isValid()) {
+        //     unionBounds = unionBounds ? unionBounds.extend(b) : L.latLngBounds(b.getSouthWest(), b.getNorthEast());
+        //   }
+        // }
       }
     });
 
@@ -277,9 +281,9 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
       }
     });
 
-    // Volar a la unión de bounds PMDU recién encendidas
-    if (pmduUnion && pmduUnion.isValid && pmduUnion.isValid()) {
-      map.flyToBounds(pmduUnion, {
+    // Volar a la unión de bounds recién encendidas (todas las categorías)
+    if (unionBounds && unionBounds.isValid && unionBounds.isValid()) {
+      map.flyToBounds(unionBounds, {
         padding: [40, 40],
         maxZoom: 13,
         duration: 0.7,

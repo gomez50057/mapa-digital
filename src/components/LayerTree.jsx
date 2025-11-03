@@ -47,11 +47,11 @@ function ToolsMenu({ id, zCurrent = 400, onZTop, onZUp, onZDown, onZBottom, onZS
   const pct = ((val - (-1000)) * 100) / (2000 - (-1000));
 
   return (
-    <details ref={detailsRef} className={styles.tools} onClick={(e)=>e.stopPropagation()}>
+    <details ref={detailsRef} className={styles.tools} onClick={(e) => e.stopPropagation()}>
       <summary
         className={styles.toolsBtn}
         aria-label="Herramientas de orden"
-        onMouseDown={(e)=>{ e.preventDefault(); e.stopPropagation(); }}
+        onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}
       >
         {/* ícono tuerca */}
         <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
@@ -59,7 +59,7 @@ function ToolsMenu({ id, zCurrent = 400, onZTop, onZUp, onZDown, onZBottom, onZS
         </svg>
       </summary>
 
-      <div ref={panelRef} className={styles.toolsPanel} onClick={(e)=>e.stopPropagation()}>
+      <div ref={panelRef} className={styles.toolsPanel} onClick={(e) => e.stopPropagation()}>
         <div className={styles.toolsRow}>
           <input
             type="range"
@@ -67,9 +67,9 @@ function ToolsMenu({ id, zCurrent = 400, onZTop, onZUp, onZDown, onZBottom, onZS
             max={2000}
             step={10}
             value={val}
-            onChange={(e)=> setVal(Number(e.target.value))}
-            onPointerUp={()=> onZSet?.(id, val)}
-            onKeyDown={(e)=>{ if (e.key === "Enter") onZSet?.(id, val); }}
+            onChange={(e) => setVal(Number(e.target.value))}
+            onPointerUp={() => onZSet?.(id, val)}
+            onKeyDown={(e) => { if (e.key === "Enter") onZSet?.(id, val); }}
             className={styles.zslider}
             style={{ "--filled": `${pct}%` }}
           />
@@ -77,10 +77,10 @@ function ToolsMenu({ id, zCurrent = 400, onZTop, onZUp, onZDown, onZBottom, onZS
         </div>
 
         <div className={styles.toolsRow}>
-          <button type="button" title="Traer al frente (Top)" onClick={()=>onZTop?.(id)}>⤒</button>
-          <button type="button" title="Subir (▲). Shift = +500" onClick={(e)=>onZUp?.(id, e.shiftKey)}>▲</button>
-          <button type="button" title="Bajar (▼). Shift = -500" onClick={(e)=>onZDown?.(id, e.shiftKey)}>▼</button>
-          <button type="button" title="Enviar atrás (Bottom)" onClick={()=>onZBottom?.(id)}>⤓</button>
+          <button type="button" title="Traer al frente (Top)" onClick={() => onZTop?.(id)}>⤒</button>
+          <button type="button" title="Subir (▲). Shift = +500" onClick={(e) => onZUp?.(id, e.shiftKey)}>▲</button>
+          <button type="button" title="Bajar (▼). Shift = -500" onClick={(e) => onZDown?.(id, e.shiftKey)}>▼</button>
+          <button type="button" title="Enviar atrás (Bottom)" onClick={() => onZBottom?.(id)}>⤓</button>
         </div>
 
         <div className={styles.toolsRow}>
@@ -89,9 +89,9 @@ function ToolsMenu({ id, zCurrent = 400, onZTop, onZUp, onZDown, onZBottom, onZS
             className={styles.zinput}
             placeholder="z exacto"
             value={val}
-            onChange={(e)=> setVal(Number(e.target.value || 0))}
-            onBlur={(e)=>{ if (e.currentTarget.value !== "") onZSet?.(id, Number(e.currentTarget.value)); }}
-            onKeyDown={(e)=>{ if (e.key === "Enter") onZSet?.(id, Number(e.currentTarget.value)); }}
+            onChange={(e) => setVal(Number(e.target.value || 0))}
+            onBlur={(e) => { if (e.currentTarget.value !== "") onZSet?.(id, Number(e.currentTarget.value)); }}
+            onKeyDown={(e) => { if (e.key === "Enter") onZSet?.(id, Number(e.currentTarget.value)); }}
           />
         </div>
 
@@ -106,8 +106,8 @@ function Node({
   node,
   level = 1,
   selected = new Set(),
-  onToggle = () => {},
-  onToggleMany = () => {},
+  onToggle = () => { },
+  onToggleMany = () => { },
   onZUp,
   onZDown,
   onZTop,
@@ -130,7 +130,8 @@ function Node({
   if (!isLeaf(node)) {
     return (
       <div className={styles.node} data-level={level}>
-        <details open className={styles.group}>
+        {/* ✅ Cerrado por defecto: se quitó `open` */}
+        <details className={styles.group}>
           <summary className={styles.summary}>
             {/* Checkbox de grupo: enciende/apaga TODAS las hojas del nivel */}
             {leafs.length > 0 && (
@@ -221,13 +222,13 @@ function Node({
 export default function LayerTree({
   tree = [],
   selected = new Set(),
-  onToggle = () => {},
-  onToggleMany = () => {},
-  onZUp = () => {},
-  onZDown = () => {},
-  onZTop = () => {},
-  onZBottom = () => {},
-  onZSet = () => {},
+  onToggle = () => { },
+  onToggleMany = () => { },
+  onZUp = () => { },
+  onZDown = () => { },
+  onZTop = () => { },
+  onZBottom = () => { },
+  onZSet = () => { },
   zMap = {},
 }) {
   return (
