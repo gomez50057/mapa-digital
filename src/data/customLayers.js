@@ -1,7 +1,7 @@
 // src/data/customLayers.js
 import L from "leaflet";
 import { getLegendStyle } from "./simbologia";
-import { GEOJSON_REGISTRY } from "./geojson"; // <-- necesario para usar los alias
+import { GEOJSON_REGISTRY } from "./geojson";
 
 /* ===== Helpers ===== */
 const asNum = (v) => (typeof v === "number" ? v : Number(v));
@@ -164,7 +164,8 @@ function pmduPoly(data, paneId, ld, popupBuilder) {
       fillOpacity: asLine ? 0.0 : 0.5,
       color: strokeColor,
       weight: w,
-      className: isCSD ? "epz-3d" : ""
+      className: isCSD ? "epz-3d" : "",
+      dashArray: ld?.meta?.dashArray || null,
     }),
     onEachFeature: (feature, layer) => {
       const p = feature?.properties ?? {};
@@ -248,6 +249,21 @@ const popupCuautepec = (p) => {
   return html;
 };
 
+/* ====== Popup genérico Tepeji (similar a Epaz/Cuautepec) ====== */
+const popupTepeji = (p) => {
+  const title = (p?.ZonSec || p?.USO || p?.Uso || p?.Clasif || p?.Categoria || "").toString().toUpperCase();
+  let html = `<div class='PopupSubT'><b>${title || "TEPEJI"}</b></div>`;
+  for (const k in p) {
+    if (!Object.hasOwn(p, k)) continue;
+    let v = p[k];
+    if (/(Superficie|Área|Area)/i.test(k)) {
+      const n = Number(v); v = Number.isFinite(n) ? `${n.toFixed(3)} ha` : v;
+    }
+    html += `<b>${k}:</b> ${v}<br>`;
+  }
+  return html;
+};
+
 
 /* ====== Builders concretos ====== */
 const buildPachuca = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupPachuca);
@@ -256,6 +272,7 @@ const buildVilla = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupVilla);
 const buildMineralRef = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupMR);
 const buildEpaz = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupEpaz);
 const buildCuautepec = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupCuautepec);
+const buildTepeji = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupTepeji);
 
 /* ====== Util ====== */
 const mapFrom = (ids, fn) => ids.reduce((acc, id) => ((acc[id] = fn), acc), {});
@@ -389,6 +406,42 @@ const IDS_CUAU = [
   "CP_Cuautepec_Tecocomulco_JuarezF"
 ];
 
+const IDS_TEPEJI_ZONSEC = [
+  "Centro_Urbano_Tepeji",
+  "Subcentro_Urbano_Tepeji",
+  "Centro_de_Barrio_Tepeji",
+  "Corredor_Comercial_Servicios_Alta_Tepeji",
+  "Corredor_Comercial_Servicios_Mediana_Tepeji",
+  "Corredor_Comercial_Servicios_Baja_Tepeji",
+  "Habitacional_Alta_Densidad_Tepeji",
+  "Habitacional_Mediana_Densidad_Tepeji",
+  "Habitacional_Baja_Densidad_Tepeji",
+  "Industria_Ligera_Tepeji",
+  "Industria_Mediana_Tepeji",
+  "Industria_Pesada_Tepeji",
+];
+
+const IDS_TEPEJI_USO_NO_URB = [
+  "Aprovechamiento_Tepeji",
+  "Aprovechamiento_Conservacion_Tepeji",
+  "Aprovechamiento_Restauracion_Tepeji",
+  "Conservacion_Tepeji",
+  "Conservacion_Restauracion_Tepeji",
+  "Proteccion_Tepeji",
+  "Restauracion_Tepeji",
+];
+
+const IDS_TEPEJI_CP = [
+  "CP_Tepeji_del_Rio_Tepeji",
+  "CP_Melchor_Ocampo_Tepeji",
+  "CP_Ojo_de_Agua_Tepeji",
+  "CP_San_Buenaventura_Tepeji",
+  "CP_San_Ildefonso_Tepeji",
+  "CP_Santiago_Tlautla_Tepeji",
+  "CP_Santiago_Tlaltepoxco_Tepeji",
+  "CP_Zona_Industrial_Tepeji",
+];
+
 /* ====== Export Builders ====== */
 export const LAYER_BUILDERS = {
   // Info general / Escuelas / Zonas Metro
@@ -406,4 +459,8 @@ export const LAYER_BUILDERS = {
   ...mapFrom(IDS_MR, buildMineralRef),
   ...mapFrom(IDS_EPAZ, buildEpaz),
   ...mapFrom(IDS_CUAU, buildCuautepec),
+
+  ...mapFrom(IDS_TEPEJI_ZONSEC, buildTepeji),
+  ...mapFrom(IDS_TEPEJI_USO_NO_URB, buildTepeji),
+  ...mapFrom(IDS_TEPEJI_CP, buildTepeji),
 };

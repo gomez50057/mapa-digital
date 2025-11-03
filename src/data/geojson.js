@@ -92,6 +92,47 @@ import {
 } from "@/capas/zonas metropolitanas/info basica/PMDU/cuautepecDeHinojosa/sueloNoUrbanizable/SNU_Cuautepec";
 
 
+// ====== Tepeji del Río de Ocampo ======
+// Zonificación Secundaria 
+import {
+  CentroBarrio_Tepeji,
+  CentroUrbano_Tepeji,
+  CCSAI_Tepeji,
+  CCSBI_Tepeji,
+  CCSMI_Tepeji,
+  HAD_Tepeji,
+  HBD_Tepeji,
+  HMD_Tepeji,
+  IndustriaLigera_Tepeji,
+  IndustriaMediana_Tepeji,
+  IndustriaPesada_Tepeji,
+  SubcentroUrbano_Tepeji,
+} from '@/capas/zonas metropolitanas/info basica/PMDU/tepejiDelRioDeOcampo/zonificacion/zon_Tepeji';
+
+// Uso no Urbano
+import {
+  RES_Tepeji,
+  APROV_Tepeji,
+  APROV_CONS__Tepeji,
+  APROV_RES__Tepeji,
+  CONS_Tepeji,
+  CONS_REST_Tepeji,
+  Proteccion_Tepeji,
+} from "@/capas/zonas metropolitanas/info basica/PMDU/tepejiDelRioDeOcampo/sueloNoUrbanizable/SNU_Tepeji";
+
+// Centro de Población
+import {
+  CP_San_Buenaventura,
+  CP_San_Ildefonso,
+  CP_Santiago_Tlaltepoxco,
+  CP_Santiago_Tlautla,
+  CP_Tepeji_del_Rio,
+  CP_Zona_Industrial,
+  CP_Melchor_Ocampo,
+  CP_Ojo_de_Agua,
+} from "@/capas/zonas metropolitanas/info basica/PMDU/tepejiDelRioDeOcampo/centrosdePoblacion/CP_Tepeji";
+
+
 export const GEOJSON_REGISTRY = {
   HGO_INFO_GEN: HgoInfoGen,
   ESC_PRIV_MS: escMediaSupPrivada,
@@ -174,6 +215,36 @@ export const GEOJSON_REGISTRY = {
   CUA_CP_SAN_LORENZO_SAYULA: CUA_CP_SAN_LORENZO_SAYULA_DATA,
   CUA_CP_TECOCOMULCO_JUAREZF: CUA_CP_TECOCOMULCO_JUAREZF_DATA,
 
+  // Zonificación Secundaria
+  CentroBarrio_Tepeji,
+  CentroUrbano_Tepeji,
+  CCSAI_Tepeji,
+  CCSBI_Tepeji,
+  CCSMI_Tepeji,
+  HAD_Tepeji,
+  HBD_Tepeji,
+  HMD_Tepeji,
+  IndustriaLigera_Tepeji,
+  IndustriaMediana_Tepeji,
+  IndustriaPesada_Tepeji,
+  SubcentroUrbano_Tepeji,
 
+  // Uso no Urbano
+  RES_Tepeji,
+  APROV_Tepeji,
+  APROV_CONS__Tepeji,
+  APROV_RES__Tepeji,
+  CONS_Tepeji,
+  CONS_REST_Tepeji,
+  Proteccion_Tepeji,
 
+  // Centros de Población
+  CP_San_Buenaventura,
+  CP_San_Ildefonso,
+  CP_Santiago_Tlaltepoxco,
+  CP_Santiago_Tlautla,
+  CP_Tepeji_del_Rio,
+  CP_Zona_Industrial,
+  CP_Melchor_Ocampo,
+  CP_Ojo_de_Agua,
 };

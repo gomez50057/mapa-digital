@@ -141,6 +141,45 @@ SYMBOLOGY.PMDU_Cuautepec_CP = [
 ];
 
 
+// ===== Tepeji del Río de Ocampo =====
+SYMBOLOGY.PMDU_Tepeji_ZonSec = [
+  { color: "#FFA420", text: "CU" },   // Centro Urbano
+  { color: "#F1D9D8", text: "SCU" },  // Subcentro Urbano
+  { color: "#FFC766", text: "CB" },   // Centro de Barrio
+  { color: "#C53131", text: "CCSA" }, // Corredor Comercial y de Servicios Alta Intensidad
+  { color: "#E6C9B2", text: "CCSM" }, // Corredor Comercial y de Servicios Mediana Intensidad
+  { color: "#2596BE", text: "CCSB" }, // Corredor Comercial y de Servicios Baja Intensidad
+  { color: "#E7E600", text: "HAD" },  // Habitacional Alta Densidad
+  { color: "#FFFFBE", text: "HMD" },  // Habitacional Mediana Densidad
+  { color: "#FFEBB0", text: "HBD" },  // Habitacional Baja Densidad
+  { color: "#005BE7", text: "IL" },   // Industria Ligera
+  { color: "#F5D5FF", text: "IM" },   // Industria Mediana
+  { color: "#DAB3D3", text: "IP" },   // Industria Pesada
+];
+
+SYMBOLOGY.PMDU_Tepeji_UsoNoUrbano = [
+  { color: "#A3FF73", text: "Aprovechamiento" },
+  { color: "#58FB3F", text: "Aprovechamiento - Conservación" },
+  { color: "#56AC2E", text: "Aprovechamiento - Restauración" },
+  { color: "#A2F77E", text: "Conservación" },
+  { color: "#00A884", text: "Conservación - Restauración" },
+  { color: "#C7A93B", text: "Protección" },
+  { color: "#6CBA63", text: "Restauración" },
+];
+
+SYMBOLOGY.PMDU_Tepeji_CP = [
+  { color: "#A900E6", text: "CP Tepeji del Río" },
+  { color: "#000000", text: "CP Melchor Ocampo" },
+  { color: "#FFAA00", text: "CP Ojo de Agua" },
+  { color: "#FF00C5", text: "CP San Buenaventura" },
+  { color: "#2596BE", text: "CP San Ildefonso" },
+  { color: "#98E500", text: "CP Santiago Tlautla" },
+  { color: "#7F7F7F", text: "CP Santiago Tlaltepoxco" },
+  { color: "#E600AA", text: "CP Zona Industrial" },
+];
+
+
+
 // Alias en español para compatibilidad con importaciones antiguas
 export const SIMBOLOGIA = SYMBOLOGY;
 
