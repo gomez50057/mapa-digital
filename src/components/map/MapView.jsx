@@ -83,6 +83,11 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
       maxBoundsViscosity: 1.0,
       worldCopyJump: false,
     });
+
+    // Forzar que los popups estén al frente
+    const popupPane = map.getPane("popupPane");
+    if (popupPane) popupPane.style.zIndex = "9999";
+
     map.fitBounds(REGION_BOUNDS, { padding: [20, 20] });
     const computedMin = map.getBoundsZoom(REGION_BOUNDS, true);
     map.setMinZoom(Math.max(5, computedMin));
@@ -261,15 +266,6 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
           if (!map.hasLayer(layer)) layer.addTo(map);
           if (typeof layer.setZIndex === "function") layer.setZIndex(z);
         }
-
-        // Opcional: si quieres que al encender un tile sin bounds específicos
-        // también haga zoom, puedes usar REGION_BOUNDS o un `ld.tileBounds`.
-        // if (newlyOnIds.includes(ld.id)) {
-        //   const b = ld.tileBounds || REGION_BOUNDS;
-        //   if (b && b.isValid && b.isValid()) {
-        //     unionBounds = unionBounds ? unionBounds.extend(b) : L.latLngBounds(b.getSouthWest(), b.getNorthEast());
-        //   }
-        // }
       }
     });
 
@@ -281,7 +277,7 @@ export default function MapView({ selectedLayers, zOverrides, legends }) {
       }
     });
 
-    // Volar a la unión de bounds recién encendidas (todas las categorías)
+    // Volar a la unión de bounds recién encendidas
     if (unionBounds && unionBounds.isValid && unionBounds.isValid()) {
       map.flyToBounds(unionBounds, {
         padding: [40, 40],

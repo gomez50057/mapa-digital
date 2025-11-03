@@ -70,5 +70,10 @@ body {
 }
 
 .leaflet-interactive.epz-3d {
-  filter: drop-shadow(0.5px 0.5px 0 rgba(0,0,0,.35));
+  filter: drop-shadow(0.5px 0.5px 0 rgba(0, 0, 0, .35));
+}
+
+.leaflet-popup-content {
+  max-height: 35vh;
+  overflow-y: auto;
 }
