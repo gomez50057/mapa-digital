@@ -8,24 +8,44 @@ import styles from "./page.module.css";
 const MapView = dynamic(() => import("@/components/map/MapView"), { ssr: false });
 
 export default function Home() {
-  const [selected, setSelected] = useState(new Map());
-  const [zOverrides, setZOverrides] = useState(new Map());
+  /** =================== Estado principal =================== */
+  const [selected, setSelected] = useState(new Map());     // id -> layerDef
+  const [zOverrides, setZOverrides] = useState(new Map()); // id -> z
 
-  /** Leyendas deduplicadas por legendKey */
-  // key -> { title, count, seq } ; seq asegura orden apilado (última arriba)
+  /** Leyendas deduplicadas por legendKey, con orden “última arriba”. */
+  // legendByKey: key -> { title, count, seq, items:Set<string>, extras:Array<{color,text}> }
   const legendSeq = useRef(0);
   const [legendByKey, setLegendByKey] = useState(new Map());
 
+  /** =================== Helpers leyendas =================== */
   const addLegend = (def) => {
     if (!def?.hasLegend || !def.legendKey) return;
     setLegendByKey((prev) => {
       const next = new Map(prev);
       const rec = next.get(def.legendKey);
-      if (rec) rec.count += 1;
-      else next.set(def.legendKey, { title: def.legendTitle ?? def.name, count: 1, seq: ++legendSeq.current });
+      if (rec) {
+        rec.count += 1;
+        if (def.legendItem) rec.items.add(def.legendItem);
+        if (def.legendExtra && def.legendExtra.color && def.legendExtra.text) {
+          rec.extras.push({ ...def.legendExtra });
+        }
+      } else {
+        const items = new Set();
+        if (def.legendItem) items.add(def.legendItem);
+        next.set(def.legendKey, {
+          title: def.legendTitle ?? def.name ?? def.legendKey,
+          count: 1,
+          seq: ++legendSeq.current,
+          items,
+          extras: def.legendExtra && def.legendExtra.color && def.legendExtra.text
+            ? [{ ...def.legendExtra }]
+            : []
+        });
+      }
       return new Map(next);
     });
   };
+
   const removeLegend = (def) => {
     if (!def?.hasLegend || !def.legendKey) return;
     setLegendByKey((prev) => {
@@ -33,12 +53,14 @@ export default function Home() {
       const rec = next.get(def.legendKey);
       if (!rec) return prev;
       rec.count -= 1;
+      if (def.legendItem) rec.items.delete(def.legendItem);
+      // Limpia extras no deterministas (opcional): aquí las dejamos
       if (rec.count <= 0) next.delete(def.legendKey);
       return new Map(next);
     });
   };
 
-  /** Cargar visibles por defecto y sus leyendas (deduplicadas) */
+  /** =================== Carga de defaults =================== */
   useEffect(() => {
     const defaults = [];
     const scan = (n) => {
@@ -51,25 +73,40 @@ export default function Home() {
     defaults.forEach((d) => mapSel.set(d.id, d));
     setSelected(mapSel);
 
+    // Inicializa leyendas con items por legendKey
     const init = new Map();
     let seq = 0;
     defaults.forEach((d) => {
-      if (d.hasLegend && d.legendKey) {
+      if (!d.hasLegend || !d.legendKey) return;
+      if (!init.has(d.legendKey)) {
+        init.set(d.legendKey, {
+          title: d.legendTitle ?? d.name ?? d.legendKey,
+          count: 1,
+          seq: ++seq,
+          items: new Set(d.legendItem ? [d.legendItem] : []),
+          extras: d.legendExtra && d.legendExtra.color && d.legendExtra.text
+            ? [{ ...d.legendExtra }]
+            : []
+        });
+      } else {
         const r = init.get(d.legendKey);
-        if (r) r.count += 1;
-        else init.set(d.legendKey, { title: d.legendTitle ?? d.name, count: 1, seq: ++seq });
+        r.count += 1;
+        if (d.legendItem) r.items.add(d.legendItem);
+        if (d.legendExtra && d.legendExtra.color && d.legendExtra.text) {
+          r.extras.push({ ...d.legendExtra });
+        }
       }
     });
     legendSeq.current = seq;
     setLegendByKey(init);
   }, []);
 
-  /** Toggle 1 capa */
+  /** =================== Toggles =================== */
+  // Toggle de capa individual (checkbox de hoja)
   const onToggleLayer = (layer) => {
     setSelected((prev) => {
       const next = new Map(prev);
-      const wasOn = next.has(layer.id);
-      if (wasOn) {
+      if (next.has(layer.id)) {
         next.delete(layer.id);
         removeLegend(layer);
         setZOverrides((z) => { const m = new Map(z); m.delete(layer.id); return m; });
@@ -81,7 +118,7 @@ export default function Home() {
     });
   };
 
-  /** Toggle masivo (checkbox de grupo) */
+  // Toggle masivo (checkbox de grupo): layers:Array<layerDef>, nextOn:boolean
   const onToggleMany = (layers, nextOn) => {
     setSelected((prev) => {
       const next = new Map(prev);
@@ -92,20 +129,40 @@ export default function Home() {
         if (nextOn && !isOn) { next.set(l.id, l); toAdd.push(l); }
         if (!nextOn && isOn) { next.delete(l.id); toDel.push(l); }
       }
-      // actualiza leyendas en lote
+      // Leyendas en lote
       setLegendByKey((prevLegend) => {
         const out = new Map(prevLegend);
         toAdd.forEach((def) => {
           if (!def.hasLegend || !def.legendKey) return;
           const r = out.get(def.legendKey);
-          if (r) r.count += 1;
-          else out.set(def.legendKey, { title: def.legendTitle ?? def.name, count: 1, seq: ++legendSeq.current });
+          if (r) {
+            r.count += 1;
+            if (def.legendItem) r.items.add(def.legendItem);
+            if (def.legendExtra && def.legendExtra.color && def.legendExtra.text) {
+              r.extras.push({ ...def.legendExtra });
+            }
+            // Traer a tope esa leyenda por interacción reciente:
+            r.seq = ++legendSeq.current;
+          } else {
+            const items = new Set();
+            if (def.legendItem) items.add(def.legendItem);
+            out.set(def.legendKey, {
+              title: def.legendTitle ?? def.name ?? def.legendKey,
+              count: 1,
+              seq: ++legendSeq.current,
+              items,
+              extras: def.legendExtra && def.legendExtra.color && def.legendExtra.text
+                ? [{ ...def.legendExtra }]
+                : []
+            });
+          }
         });
         toDel.forEach((def) => {
           if (!def.hasLegend || !def.legendKey) return;
           const r = out.get(def.legendKey);
           if (!r) return;
           r.count -= 1;
+          if (def.legendItem) r.items.delete(def.legendItem);
           if (r.count <= 0) out.delete(def.legendKey);
         });
         return new Map(out);
@@ -114,12 +171,13 @@ export default function Home() {
     });
   };
 
-  /** Z-order helpers (compatibles con ToolsMenu) */
+  /** =================== Z-order helpers =================== */
   const effectiveZ = (id) => {
     const def = selected.get(id);
     if (!def) return 400;
     return zOverrides.get(id) ?? def.defaultZ ?? 400;
-    };
+  };
+
   const bumpZ = (id, delta = 100) => {
     setZOverrides((prev) => {
       const next = new Map(prev);
@@ -127,6 +185,7 @@ export default function Home() {
       return next;
     });
   };
+
   const moveTop = (id) => {
     const ids = [...selected.keys()];
     const max = ids.reduce((acc, k) => Math.max(acc, effectiveZ(k)), 400);
@@ -136,6 +195,7 @@ export default function Home() {
       return next;
     });
   };
+
   const moveBottom = (id) => {
     const ids = [...selected.keys()];
     const min = ids.reduce((acc, k) => Math.min(acc, effectiveZ(k)), 400);
@@ -145,6 +205,7 @@ export default function Home() {
       return next;
     });
   };
+
   const setZExact = (id, value) => {
     const v = Number(value);
     if (Number.isFinite(v)) {
@@ -156,17 +217,22 @@ export default function Home() {
     }
   };
 
-  /** Lista deduplicada para LegendDock: [{key,title}] (orden: más reciente arriba) */
-  const legendList = useMemo(
-    () => Array.from(legendByKey.entries())
-      .sort((a, b) => b[1].seq - a[1].seq)
-      .map(([key, { title }]) => ({ key, title })),
-    [legendByKey]
-  );
-
-  /** Seleccion actual (Map) como memo */
+  /** =================== Derivados (memo) =================== */
   const selectedLayers = useMemo(() => selected, [selected]);
 
+  // Leyenda final para LegendDock (orden: seq desc → la última activada arriba)
+  const legendList = useMemo(() => {
+    return [...legendByKey.entries()]
+      .sort((a, b) => b[1].seq - a[1].seq)
+      .map(([legendKey, rec]) => ({
+        legendKey,
+        title: rec.title,
+        filterTexts: Array.from(rec.items || []), // filtra ítems de simbología a SOLO lo seleccionado
+        extras: rec.extras || []
+      }));
+  }, [legendByKey]);
+
+  /** =================== Render =================== */
   return (
     <div className={styles.layout}>
       <LayerTree
@@ -179,13 +245,15 @@ export default function Home() {
         onZTop={moveTop}
         onZBottom={moveBottom}
         onZSet={setZExact}
-        zMap={Object.fromEntries([...selectedLayers.keys()].map((id)=>[id, effectiveZ(id)]))}
+        zMap={Object.fromEntries(
+          [...selectedLayers.keys()].map((id) => [id, effectiveZ(id)])
+        )}
       />
 
       <MapView
         selectedLayers={selectedLayers}
         zOverrides={zOverrides}
-        legends={legendList}  
+        legends={legendList}  // ✅ deduplicada + solo ítems seleccionados
       />
     </div>
   );
