@@ -1,5 +1,5 @@
-// ⚠️ Este archivo DEBE existir exactamente en src/data/simbologia.js
-// y exportar tanto named como default para evitar discrepancias.
+// ⚠️ Debe existir exactamente en src/data/simbologia.js
+// Expone ambos nombres (SYMBOLOGY y SIMBOLOGIA) + export default, para compatibilidad.
 
 export const SYMBOLOGY = {
   PMDU_Pachuca: [
@@ -11,6 +11,7 @@ export const SYMBOLOGY = {
     { color: "#A02142", text: "Solicitado SEDATU" },
     { color: "#20344c", text: "Susceptible de elaborar" }
   ],
+
   PMDU_Tizayuca: [
     { color: "#d4e5b3", text: "Agricultura Tecnificada" },
     { color: "#d5d5b3", text: "Agroindustria" },
@@ -35,6 +36,7 @@ export const SYMBOLOGY = {
     { color: "#bed5b3", text: "Parque Hídrico" },
     { color: "#FF7F00", text: "Reserva Territorial Futura" }
   ],
+
   PMDU_VillaTezontepec: [
     { color: "#d4e5b3", text: "Agroindustria" },
     { color: "#d5d5b3", text: "Área Agrícola" },
@@ -51,6 +53,7 @@ export const SYMBOLOGY = {
     { color: "#d3c2bf", text: "Zona de Amortiguamiento Verde" },
     { color: "#bdb8b7", text: "Zona de Preservación Ecológica" }
   ],
+
   PMDU_MR: [
     { color: "#ffa420", text: "Centro Urbano Mixto" },
     { color: "#e6c9b2", text: "Comercio y Servicios" },
@@ -77,7 +80,57 @@ export const SYMBOLOGY = {
     { color: "#f1d9d8", text: "Subcentro Urbano Mixto" },
     { color: "#9c9c9c", text: "Zona Sujeta a Estudio Hidrológico" },
     { color: "#e2e2ce", text: "ZSERPCE" }
+  ],
+
+  // ===== Epazoyucan =====
+  PMDU_Epazoyucan_ZonSec: [
+    { color: "#FFFFBE", text: "Habitacional Densidad Mínima (HD1)" },
+    { color: "#FFFF73", text: "Habitacional Densidad Baja (HD2)" },
+    { color: "#E6E600", text: "Habitacional Densidad Media (HD3)" },
+    { color: "#FFD37F", text: "CSD1: Comercio y Servicios Densidad Mínima" },
+    { color: "#FFAA00", text: "CSD2: Comercio y Servicios Densidad Baja" },
+    { color: "#FF5500", text: "CSD3: Comercio y Servicios Densidad Media" },
+    { color: "#DF73FF", text: "Industria Ligera (IL)" },
+    { color: "#962142", text: "Agroindustria (AG)" },
+    { color: "#FF3399", text: "Equipamiento Público (EQ)" },
+    { color: "#FF66CC", text: "Equipamiento Privado (EQP)" },
+    { color: "#A87000", text: "Polígono de Actuación (PA)" }
+  ],
+
+  PMDU_Epazoyucan_NoUrbano: [
+    { color: "#A3FF73", text: "Aprovechamiento" },
+    { color: "#58FB3F", text: "Aprovechamiento – Conservación" },
+    { color: "#56AC2E", text: "Aprovechamiento – Restauración" },
+    { color: "#A2F77E", text: "Conservación" },
+    { color: "#00A884", text: "Conservación – Restauración" },
+    { color: "#6CBA63", text: "Restauración" }
+  ],
+
+  PMDU_Epazoyucan_CP: [
+    { color: "#A900E6", text: "CP Epazoyucan" },
+    { color: "#000000", text: "CP San Juan Tizahuapan" },
+    { color: "#FFAA00", text: "CP Santa Mónica" },
+    { color: "#FF00C5", text: "CP Xochihuacán" }
   ]
 };
 
-export default SYMBOLOGY; 
+// Alias en español para compatibilidad con importaciones antiguas
+export const SIMBOLOGIA = SYMBOLOGY;
+
+// Índice rápido: legendKey -> (legendItem -> objeto)
+const LEGEND_INDEX = Object.fromEntries(
+  Object.entries(SYMBOLOGY).map(([key, arr]) => [
+    key,
+    Object.fromEntries(arr.map((it) => [it.text, it]))
+  ])
+);
+
+/** Devuelve { fill, stroke } a partir de (legendKey, legendItem) */
+export function getLegendStyle(legendKey, legendItem) {
+  const item = LEGEND_INDEX?.[legendKey]?.[legendItem];
+  if (!item) return null;
+  return { fill: item.color, stroke: item.stroke || item.color };
+}
+
+// Compat con `import simb from "@/data/simbologia"`
+export default SYMBOLOGY;

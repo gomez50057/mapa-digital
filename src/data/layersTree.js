@@ -964,6 +964,297 @@ export const LAYERS_TREE = [
           },
         ],
       },
+
+
+      /* ==================== Epazoyucan ==================== */
+
+      {
+        id: "epazoyucan",
+        name: "Epazoyucan",
+        children: [
+          /* ========== Zonificación Secundaria ========== */
+          {
+            id: "epa_zon_sec",
+            name: "Zonificación Secundaria",
+            layers: [
+              {
+                id: "Habitacional_Densidad_Mínima_Epazoyucan",
+                name: "Habitacional Densidad Mínima (HD1)",
+                type: "vector",
+                geojsonId: "Habitacional_Densidad_Mínima_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "Habitacional Densidad Mínima (HD1)",
+                defaultVisible: false,
+                defaultZ: 720
+              },
+              {
+                id: "Habitacional_Densidad_Baja_Epazoyucan",
+                name: "Habitacional Densidad Baja (HD2)",
+                type: "vector",
+                geojsonId: "Habitacional_Densidad_Baja_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "Habitacional Densidad Baja (HD2)",
+                defaultVisible: false,
+                defaultZ: 721
+              },
+              {
+                id: "Habitacional_Densidad_Media_Epazoyucan",
+                name: "Habitacional Densidad Media (HD3)",
+                type: "vector",
+                geojsonId: "Habitacional_Densidad_Media_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "Habitacional Densidad Media (HD3)",
+                defaultVisible: false,
+                defaultZ: 722
+              },
+              {
+                id: "comercio_y_servicios_densidad_minima_Epazoyucan",
+                name: "CSD1: Comercio y Servicios Densidad Mínima",
+                type: "vector",
+                geojsonId: "comercio_y_servicios_densidad_minima_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "CSD1: Comercio y Servicios Densidad Mínima",
+                defaultVisible: false,
+                defaultZ: 723
+              },
+              {
+                id: "comercio_y_servicios_densidad_baja_Epazoyucan",
+                name: "CSD2: Comercio y Servicios Densidad Baja",
+                type: "vector",
+                geojsonId: "comercio_y_servicios_densidad_baja_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "CSD2: Comercio y Servicios Densidad Baja",
+                defaultVisible: false,
+                defaultZ: 724
+              },
+              {
+                id: "comercio_y_servicios_densidad_media_Epazoyucan",
+                name: "CSD3: Comercio y Servicios Densidad Media",
+                type: "vector",
+                geojsonId: "comercio_y_servicios_densidad_media_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "CSD3: Comercio y Servicios Densidad Media",
+                defaultVisible: false,
+                defaultZ: 725
+              },
+              {
+                id: "Industria_Ligera_Epazoyucan",
+                name: "Industria Ligera (IL)",
+                type: "vector",
+                geojsonId: "Industria_Ligera_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "Industria Ligera (IL)",
+                defaultVisible: false,
+                defaultZ: 726
+              },
+              {
+                id: "agroindustria_Epazoyucan",
+                name: "Agroindustria (AG)",
+                type: "vector",
+                geojsonId: "agroindustria_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "Agroindustria (AG)",
+                defaultVisible: false,
+                defaultZ: 727
+              },
+              {
+                id: "Equipamiento_Publico_Epazoyucan",
+                name: "Equipamiento Público (EQ)",
+                type: "vector",
+                geojsonId: "Equipamiento_Publico_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "Equipamiento Público (EQ)",
+                defaultVisible: false,
+                defaultZ: 728
+              },
+              {
+                id: "Equipamiento_Privado_Epazoyucan",
+                name: "Equipamiento Privado (EQP)",
+                type: "vector",
+                geojsonId: "Equipamiento_Privado_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "Equipamiento Privado (EQP)",
+                defaultVisible: false,
+                defaultZ: 729
+              },
+              {
+                id: "poligonoDeActuacion_Epazoyuca_Epazoyucan",
+                name: "Polígono de Actuación (PA)",
+                type: "vector",
+                geojsonId: "poligonoDeActuacion_Epazoyuca_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_ZonSec",
+                legendTitle: "Epazoyucan — PMDU (Zonificación Secundaria)",
+                legendItem: "Polígono de Actuación (PA)",
+                defaultVisible: false,
+                defaultZ: 730
+              }
+            ]
+          },
+
+          /* ========== Uso no Urbano ========== */
+          {
+            id: "epa_no_urb",
+            name: "Uso no Urbano",
+            layers: [
+              {
+                id: "Aprovechamiento_Epazoyucan",
+                name: "Aprovechamiento",
+                type: "vector",
+                geojsonId: "Aprovechamiento_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_NoUrbano",
+                legendTitle: "Epazoyucan — PMDU (Uso no Urbano)",
+                legendItem: "Aprovechamiento",
+                defaultVisible: false,
+                defaultZ: 740
+              },
+              {
+                id: "Aprovechamiento_conservacion_Epazoyucan",
+                name: "Aprovechamiento – Conservación",
+                type: "vector",
+                geojsonId: "Aprovechamiento_conservacion_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_NoUrbano",
+                legendTitle: "Epazoyucan — PMDU (Uso no Urbano)",
+                legendItem: "Aprovechamiento – Conservación",
+                defaultVisible: false,
+                defaultZ: 741
+              },
+              {
+                id: "Aprovechamiento_restauracion_Epazoyucan",
+                name: "Aprovechamiento – Restauración",
+                type: "vector",
+                geojsonId: "Aprovechamiento_restauracion_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_NoUrbano",
+                legendTitle: "Epazoyucan — PMDU (Uso no Urbano)",
+                legendItem: "Aprovechamiento – Restauración",
+                defaultVisible: false,
+                defaultZ: 742
+              },
+              {
+                id: "Conservacion_Epazoyuca",
+                name: "Conservación",
+                type: "vector",
+                geojsonId: "Conservacion_Epazoyuca",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_NoUrbano",
+                legendTitle: "Epazoyucan — PMDU (Uso no Urbano)",
+                legendItem: "Conservación",
+                defaultVisible: false,
+                defaultZ: 743
+              },
+              {
+                id: "Conservacion_restauracion_Epazoyucan",
+                name: "Conservación – Restauración",
+                type: "vector",
+                geojsonId: "Conservacion_restauracion_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_NoUrbano",
+                legendTitle: "Epazoyucan — PMDU (Uso no Urbano)",
+                legendItem: "Conservación – Restauración",
+                defaultVisible: false,
+                defaultZ: 744
+              },
+              {
+                id: "Restauracion_Epazoyucan",
+                name: "Restauración",
+                type: "vector",
+                geojsonId: "Restauracion_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_NoUrbano",
+                legendTitle: "Epazoyucan — PMDU (Uso no Urbano)",
+                legendItem: "Restauración",
+                defaultVisible: false,
+                defaultZ: 745
+              }
+            ]
+          },
+
+          /* ========== Centros de Población ========== */
+          {
+            id: "epa_cp",
+            name: "Centro de Población",
+            layers: [
+              {
+                id: "CP_Epazoyucan",
+                name: "CP Epazoyucan",
+                type: "vector",
+                geojsonId: "CP_Epazoyucan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_CP",
+                legendTitle: "Epazoyucan — Centros de Población",
+                legendItem: "CP Epazoyucan",
+                defaultVisible: false,
+                defaultZ: 750,
+                meta: { asLine: true, weight: 3 }
+              },
+              {
+                id: "CP_San_Juan_Tizahuapan",
+                name: "CP San Juan Tizahuapan",
+                type: "vector",
+                geojsonId: "CP_San_Juan_Tizahuapan",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_CP",
+                legendTitle: "Epazoyucan — Centros de Población",
+                legendItem: "CP San Juan Tizahuapan",
+                defaultVisible: false,
+                defaultZ: 751,
+                meta: { asLine: true, weight: 3 }
+              },
+              {
+                id: "CP_Santa_Mónica",
+                name: "CP Santa Mónica",
+                type: "vector",
+                geojsonId: "CP_Santa_Mónica",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_CP",
+                legendTitle: "Epazoyucan — Centros de Población",
+                legendItem: "CP Santa Mónica",
+                defaultVisible: false,
+                defaultZ: 752,
+                meta: { asLine: true, weight: 3 }
+              },
+              {
+                id: "CP_Xochihuacán",
+                name: "CP Xochihuacán",
+                type: "vector",
+                geojsonId: "CP_Xochihuacán",
+                hasLegend: true,
+                legendKey: "PMDU_Epazoyucan_CP",
+                legendTitle: "Epazoyucan — Centros de Población",
+                legendItem: "CP Xochihuacán",
+                defaultVisible: false,
+                defaultZ: 753,
+                meta: { asLine: true, weight: 3 }
+              }
+            ]
+          }
+        ]
+      }
+
+
     ],
   },
 

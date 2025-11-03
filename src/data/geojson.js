@@ -29,6 +29,37 @@ import {
   MR_Reserva, MR_Servicios, MR_SUM, MR_ZSEH, MR_ZSERPCE
 } from "@/capas/zonas metropolitanas/info basica/PMDU/mineralDeLaReforma/zonSecMR";
 
+// Epazoyucan (Zonificación secundaria)
+import {
+  CP_Epazoyucan as EPA_CP_EPAZ_DATA,
+  CP_San_Juan_Tizahuapan as EPA_CP_SJT_DATA,
+  CP_Santa_Mónica as EPA_CP_SM_DATA,
+  CP_Xochihuacán as EPA_CP_XOCHI_DATA
+} from "@/capas/zonas metropolitanas/info basica/PMDU/epazoyucan/centrosdePoblacion/CP_Epazoyuca";
+
+import {
+  Aprovechamiento_Epazoyucan as EPA_APROV_DATA,
+  Aprovechamiento_conservacion_Epazoyucan as EPA_APROV_CONS_DATA,
+  Aprovechamiento_restauracion_Epazoyucan as EPA_APROV_RES_DATA,
+  Conservacion_Epazoyuca as EPA_CONS_DATA,
+  Conservacion_restauracion_Epazoyucan as EPA_CONS_RES_DATA,
+  Restauracion_Epazoyucan as EPA_RES_DATA,
+} from "@/capas/zonas metropolitanas/info basica/PMDU/epazoyucan/sueloNoUrbanizable/SNU_Epazoyuca";
+
+import {
+  agroindustria_Epazoyucan as EPA_AG,
+  comercio_y_servicios_densidad_minima_Epazoyucan as EPA_CSD1_DATA,
+  comercio_y_servicios_densidad_baja_Epazoyucan as EPA_CSD2_DATA,
+  comercio_y_servicios_densidad_media_Epazoyucan as EPA_CSD3_DATA,
+  Equipamiento_Publico_Epazoyucan as EPA_EQ_DATA,
+  Equipamiento_Privado_Epazoyucan as EPA_EQP_DATA,
+  Habitacional_Densidad_Minima_Epazoyucan as EPA_HD1_DATA,
+  Habitacional_Densidad_Baja_Epazoyucan as EPA_HD2_DATA,
+  Habitacional_Densidad_Media_Epazoyucan as EPA_HD3_DATA,
+  Industria_Ligera_Epazoyucan as EPA_IL_DATA,
+  poligonoDeActuacion_Epazoyuca_Epazoyucan as EPA_PA_DATA,
+} from "@/capas/zonas metropolitanas/info basica/PMDU/epazoyucan/zonificacion/zon_Epazoyuca";
+
 
 
 export const GEOJSON_REGISTRY = {
@@ -61,5 +92,33 @@ export const GEOJSON_REGISTRY = {
   MR_ILNC, MR_PA, MR_PPDU, MR_PAT, MR_PEF, MR_PPI,
   // MR_Puente_bimodal, MR_Puente_multimodal,
   MR_Reserva, MR_Servicios, MR_SUM, MR_ZSEH, MR_ZSERPCE,
+
+  /* Epazoyucan */
+  // Zonificación Secundaria
+  EPA_HD1: EPA_HD1_DATA,
+  EPA_HD2: EPA_HD2_DATA,
+  EPA_HD3: EPA_HD3_DATA,
+  EPA_CSD1: EPA_CSD1_DATA,
+  EPA_CSD2: EPA_CSD2_DATA,
+  EPA_CSD3: EPA_CSD3_DATA,
+  EPA_IL: EPA_IL_DATA,
+  EPA_AG: EPA_AG,
+  EPA_EQ: EPA_EQ_DATA,
+  EPA_EQP: EPA_EQP_DATA,
+  EPA_PA: EPA_PA_DATA,
+
+  // Uso no Urbano
+  EPA_APROV: EPA_APROV_DATA,
+  EPA_APROV_CONS: EPA_APROV_CONS_DATA,
+  EPA_APROV_RES: EPA_APROV_RES_DATA,
+  EPA_CONS: EPA_CONS_DATA,
+  EPA_CONS_RES: EPA_CONS_RES_DATA,
+  EPA_RES: EPA_RES_DATA,
+
+  // Centro de Población
+  EPA_CP_EPAZ: EPA_CP_EPAZ_DATA,
+  EPA_CP_SJT: EPA_CP_SJT_DATA,
+  EPA_CP_SM: EPA_CP_SM_DATA,
+  EPA_CP_XOCHI: EPA_CP_XOCHI_DATA
 
 };
