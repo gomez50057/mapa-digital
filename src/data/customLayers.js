@@ -264,6 +264,21 @@ const popupTepeji = (p) => {
   return html;
 };
 
+/** Santiago TLG — genérico: respeta Superficie/Área y omite duplicados de título */
+const popupSantiago = (p) => {
+  const title = (p?.ZonSec || p?.ZonSec2022 || p?.Uso || p?.USO || p?.Categoria || "").toString().toUpperCase();
+  let html = `<div class='PopupSubT'><b>${title || "SANTIAGO DE TULANTEPEC"}</b></div>`;
+  for (const k in p) {
+    if (!Object.hasOwn(p, k)) continue;
+    if (["ZonSec", "ZonSec2022", "Uso", "USO", "NOMGEO"].includes(k)) continue;
+    let v = p[k];
+    if (/(Superficie|Área|Area)/i.test(k)) {
+      const n = Number(v); v = Number.isFinite(n) ? `${n.toFixed(3)} ha` : v;
+    }
+    html += `<b>${k}:</b> ${v}<br>`;
+  }
+  return html;
+};
 
 /* ====== Builders concretos ====== */
 const buildPachuca = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupPachuca);
@@ -442,6 +457,46 @@ const IDS_TEPEJI_CP = [
   "CP_Zona_Industrial_Tepeji",
 ];
 
+
+const IDS_SANTIAGO_ZONSEC = [
+  "HDMinima_SantiagoTLG",  // HD1
+  "HDB_SantiagoTLG",       // HD2
+  "HDMedia_SantiagoTLG",   // HD3
+  "CSDMinima_SantiagoTLG", // CSD1
+  "CSDB_SantiagoTLG",      // CSD2
+  "CSDMedia_SantiagoTLG",  // CSD3
+  "IL_SantiagoTLG",        // IL
+  "EP_SantiagoTLG",        // EQ
+  "PA_SantiagoTLG",        // PA
+];
+
+/* ====== IDs Santiago de Tulantepec — Uso no Urbano ====== */
+const IDS_SANTIAGO_NO_URB = [
+  "APROV_SantiagoTLG",
+  "APROV_CONS_SantiagoTLG",
+  "APROV_RES_SantiagoTLG",
+  "CONS_SantiagoTLG",
+  "CONS_RES_SantiagoTLG",
+  "PROT_SantiagoTLG",
+  "RES_SantiagoTLG",
+];
+
+/* ====== IDs Santiago de Tulantepec — Centros de Población ====== */
+const IDS_SANTIAGO_CP = [
+  "CP_Santiago_Tulantepec",
+  "CP_El_Pedregal_de_San_Jose",
+  "CP_Los_Romeros",
+  "CP_Las_Lajas",
+  "CP_Emiliano_Zapata",
+  "CP_Ventoquipa",
+];
+
+/* ====== IDs especiales ====== */
+const IDS_SANTIAGO_DEF_LIMITES = ["definicionLimites_SantiagoTLG"];
+const IDS_SANTIAGO_ZA = ["zonaArqueologica_SantiagoTLG"];
+
+const buildSantiago = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupSantiago);
+
 /* ====== Export Builders ====== */
 export const LAYER_BUILDERS = {
   // Info general / Escuelas / Zonas Metro
@@ -451,6 +506,7 @@ export const LAYER_BUILDERS = {
   zmpachuca_info: (data, paneId) => buildMetropolitana(data, paneId, "#B6DC76", "transparent", "Zona Metropolitana"),
   zmtula_info: (data, paneId) => buildMetropolitana(data, paneId, "Aqua", "transparent", "Zona Metropolitana"),
   zmtulancingo_info: (data, paneId) => buildMetropolitana(data, paneId, "#241E4E", "transparent", "Zona Metropolitana"),
+
 
   // PMDU
   ...mapFrom(IDS_PACHUCA, buildPachuca),
@@ -463,4 +519,10 @@ export const LAYER_BUILDERS = {
   ...mapFrom(IDS_TEPEJI_ZONSEC, buildTepeji),
   ...mapFrom(IDS_TEPEJI_USO_NO_URB, buildTepeji),
   ...mapFrom(IDS_TEPEJI_CP, buildTepeji),
+
+  ...mapFrom(IDS_SANTIAGO_ZONSEC, buildSantiago),
+  ...mapFrom(IDS_SANTIAGO_NO_URB, buildSantiago),
+  ...mapFrom(IDS_SANTIAGO_CP, buildSantiago),
+  ...mapFrom(IDS_SANTIAGO_DEF_LIMITES, buildSantiago),
+  ...mapFrom(IDS_SANTIAGO_ZA, buildSantiago),
 };

@@ -132,6 +132,47 @@ import {
   CP_Ojo_de_Agua,
 } from "@/capas/zonas metropolitanas/info basica/PMDU/tepejiDelRioDeOcampo/centrosdePoblacion/CP_Tepeji";
 
+// ====== Santiago de Tulantepec de Lugo Guerrero ======
+// Zonificación Secundaria
+import {
+  CSDB_SantiagoTLG,
+  CSDMedia_SantiagoTLG,
+  CSDMinima_SantiagoTLG,
+  EP_SantiagoTLG,
+  HDB_SantiagoTLG,
+  HDMedia_SantiagoTLG,
+  HDMinima_SantiagoTLG,
+  IL_SantiagoTLG,
+  PA_SantiagoTLG,
+} from "@/capas/zonas metropolitanas/info basica/PMDU/santiagoTulantepecDeLugoGuerrero/zonificacion/zon_SantiagoTLG";
+
+// Uso no Urbano
+import {
+  RES_SantiagoTLG,
+  PROT_SantiagoTLG,
+  CONS_RES_SantiagoTLG,
+  CONS_SantiagoTLG,
+  APROV_RES_SantiagoTLG,
+  APROV_CONS_SantiagoTLG,
+  APROV_SantiagoTLG,
+} from "@/capas/zonas metropolitanas/info basica/PMDU/santiagoTulantepecDeLugoGuerrero/sueloNoUrbanizable/SNU_SantiagoTLG";
+
+// Centro de Población
+import {
+  CP_Ventoquipa,
+  CP_Santiago_Tulantepec,
+  CP_Los_Romeros,
+  CP_Las_Lajas,
+  CP_Emiliano_Zapata,
+  CP_El_Pedregal_de_San_Jose,
+} from "@/capas/zonas metropolitanas/info basica/PMDU/santiagoTulantepecDeLugoGuerrero/centrosdePoblacion/CP_SantiagoTLG";
+
+// Definición de Límites
+import { definicionLimites } from "@/capas/zonas metropolitanas/info basica/PMDU/santiagoTulantepecDeLugoGuerrero/definicionLimites/definicionLimites_SantiagoTLG";
+
+// Zona Arqueológica
+import { zonaArqueologica } from "@/capas/zonas metropolitanas/info basica/PMDU/santiagoTulantepecDeLugoGuerrero/zonaArqueologica/zonaArqueologica_SantiagoTLG";
+
 
 export const GEOJSON_REGISTRY = {
   HGO_INFO_GEN: HgoInfoGen,
@@ -215,6 +256,7 @@ export const GEOJSON_REGISTRY = {
   CUA_CP_SAN_LORENZO_SAYULA: CUA_CP_SAN_LORENZO_SAYULA_DATA,
   CUA_CP_TECOCOMULCO_JUAREZF: CUA_CP_TECOCOMULCO_JUAREZF_DATA,
 
+  /* Cuautepec de Hinojosa */
   // Zonificación Secundaria
   CentroBarrio_Tepeji,
   CentroUrbano_Tepeji,
@@ -247,4 +289,40 @@ export const GEOJSON_REGISTRY = {
   CP_Zona_Industrial,
   CP_Melchor_Ocampo,
   CP_Ojo_de_Agua,
+
+  /* ====== Santiago de Tulantepec de Lugo Guerrero ====== */
+  // Zonificación Secundaria
+  CSDB_SantiagoTLG,
+  CSDMedia_SantiagoTLG,
+  CSDMinima_SantiagoTLG,
+  EP_SantiagoTLG,
+  HDB_SantiagoTLG,
+  HDMedia_SantiagoTLG,
+  HDMinima_SantiagoTLG,
+  IL_SantiagoTLG,
+  PA_SantiagoTLG,
+
+  // Uso no Urbano
+  RES_SantiagoTLG,
+  PROT_SantiagoTLG,
+  CONS_RES_SantiagoTLG,
+  CONS_SantiagoTLG,
+  APROV_RES_SantiagoTLG,
+  APROV_CONS_SantiagoTLG,
+  APROV_SantiagoTLG,
+
+  // Centros de Población
+  CP_Ventoquipa,
+  CP_Santiago_Tulantepec,
+  CP_Los_Romeros,
+  CP_Las_Lajas,
+  CP_Emiliano_Zapata,
+  CP_El_Pedregal_de_San_Jose,
+
+  // Definición de Límites (alias registrable)
+  definicionLimites_SantiagoTLG: definicionLimites,
+
+  // Zona Arqueológica (alias registrable)
+  zonaArqueologica_SantiagoTLG: zonaArqueologica,
+
 };

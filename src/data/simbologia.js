@@ -143,18 +143,18 @@ SYMBOLOGY.PMDU_Cuautepec_CP = [
 
 // ===== Tepeji del Río de Ocampo =====
 SYMBOLOGY.PMDU_Tepeji_ZonSec = [
-  { color: "#FFA420", text: "CU" },   // Centro Urbano
-  { color: "#F1D9D8", text: "SCU" },  // Subcentro Urbano
-  { color: "#FFC766", text: "CB" },   // Centro de Barrio
-  { color: "#C53131", text: "CCSA" }, // Corredor Comercial y de Servicios Alta Intensidad
-  { color: "#E6C9B2", text: "CCSM" }, // Corredor Comercial y de Servicios Mediana Intensidad
-  { color: "#2596BE", text: "CCSB" }, // Corredor Comercial y de Servicios Baja Intensidad
-  { color: "#E7E600", text: "HAD" },  // Habitacional Alta Densidad
-  { color: "#FFFFBE", text: "HMD" },  // Habitacional Mediana Densidad
-  { color: "#FFEBB0", text: "HBD" },  // Habitacional Baja Densidad
-  { color: "#005BE7", text: "IL" },   // Industria Ligera
-  { color: "#F5D5FF", text: "IM" },   // Industria Mediana
-  { color: "#DAB3D3", text: "IP" },   // Industria Pesada
+  { color: "#FFA420", text: "Centro Urbano (CU)" },
+  { color: "#F1D9D8", text: "Subcentro Urbano (SCU)" },
+  { color: "#FFC766", text: "Centro de Barrio (CB)" },
+  { color: "#C53131", text: "Corredor Comercial y de Servicios Alta Intensidad (CCSA)" },
+  { color: "#E6C9B2", text: "Corredor Comercial y de Servicios Mediana Intensidad (CCSM)" },
+  { color: "#2596BE", text: "Corredor Comercial y de Servicios Baja Intensidad (CCSB)" },
+  { color: "#E7E600", text: "Habitacional Alta Densidad (HAD)" },
+  { color: "#FFFFBE", text: "Habitacional Mediana Densidad (HMD)" },
+  { color: "#FFEBB0", text: "Habitacional Baja Densidad (HBD)" },
+  { color: "#005BE7", text: "Industria Ligera (IL)" },
+  { color: "#F5D5FF", text: "Industria Mediana (IM)" },
+  { color: "#DAB3D3", text: "Industria Pesada (IP)" },
 ];
 
 SYMBOLOGY.PMDU_Tepeji_UsoNoUrbano = [
@@ -176,6 +176,46 @@ SYMBOLOGY.PMDU_Tepeji_CP = [
   { color: "#98E500", text: "CP Santiago Tlautla" },
   { color: "#7F7F7F", text: "CP Santiago Tlaltepoxco" },
   { color: "#E600AA", text: "CP Zona Industrial" },
+];
+
+// ===== Santiago de Tulantepec de Lugo Guerrero =====
+SYMBOLOGY.PMDU_SantiagoTLG_ZonSec = [
+  { color: "#FFFFDD", text: "Habitacional Densidad Mínima (HD1)" },
+  { color: "#FFFEB8", text: "Habitacional Densidad Baja (HD2)" },
+  { color: "#F0F380", text: "Habitacional Densidad Media (HD3)" },
+  { color: "#FEEFCD", text: "Corredor Comercial y de Servicios Densidad Mínima (CSD1)" },
+  { color: "#FFE3AC", text: "Corredor Comercial y de Servicios Densidad Baja (CSD2)" },
+  { color: "#FEC0AA", text: "Corredor Comercial y de Servicios Densidad Media (CSD3)" },
+  { color: "#EEB9FD", text: "Industria Ligera (IL)" },
+  { color: "#FFB2E6", text: "Equipamiento Público (EQ)" },
+  { color: "#E0CDA5", text: "Polígono de Actuación (PA)" },
+];
+
+SYMBOLOGY.PMDU_SantiagoTLG_UsoNoUrbano = [
+  { color: "#D1FEBA", text: "Aprovechamiento" },
+  { color: "#AFFBA3", text: "Aprovechamiento-Conservación" },
+  { color: "#ABD595", text: "Aprovechamiento-Restauración" },
+  { color: "#CFFBBC", text: "Conservación" },
+  { color: "#80D2C3", text: "Conservación-Restauración" },
+  { color: "#A0E595", text: "Protección" },
+  { color: "#B6DBAF", text: "Restauración" },
+];
+
+SYMBOLOGY.PMDU_SantiagoTLG_CP = [
+  { color: "#000000", text: "Santiago Tulantepec" },     // punteado (lo damos con dashArray)
+  { color: "#4383CB", text: "El Pedregal de San José" }, // punteado
+  { color: "#E39795", text: "Los Romeros" },             // punteado
+  { color: "#8A03B3", text: "Las Lajas" },               // punteado
+  { color: "#F039CE", text: "Emiliano Zapata" },         // punteado
+  { color: "#CE5815", text: "Ventoquipa" },              // punteado
+];
+
+SYMBOLOGY.PMDU_SantiagoTLG_DefLim = [
+  { color: "#EFBFA6", text: "Definición de Límites Territoriales" } // líneas diagonales (simuladas con dash)
+];
+
+SYMBOLOGY.PMDU_SantiagoTLG_ZA = [
+  { color: "#001A5B", text: "Zona Arqueológica Zazacuala" } // punteado
 ];
 
 

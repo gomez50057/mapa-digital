@@ -965,9 +965,7 @@ export const LAYERS_TREE = [
         ],
       },
 
-
       /* ==================== Epazoyucan ==================== */
-
       {
         id: "epazoyucan",
         name: "Epazoyucan",
@@ -1857,7 +1855,358 @@ export const LAYERS_TREE = [
         ],
       },
 
+      /* ==================== Santiago de Tulantepec de Lugo Guerrero ==================== */
+      {
+        id: "santiago_tlg",
+        name: "Santiago de Tulantepec de Lugo Guerrero",
+        children: [
+          {
+            id: "santiago_pmdu",
+            name: "PMDU",
+            children: [
 
+              /* -------- Zonificación Secundaria -------- */
+              {
+                id: "santiago_zon_sec",
+                name: "Zonificación Secundaria",
+                layers: [
+                  {
+                    id: "HDMinima_SantiagoTLG",
+                    name: "Habitacional Densidad Mínima (HD1)",
+                    type: "vector",
+                    geojsonId: "HDMinima_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZonSec",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
+                    legendItem: "HD1",
+                    defaultVisible: false,
+                    defaultZ: 820
+                  },
+                  {
+                    id: "HDB_SantiagoTLG",
+                    name: "Habitacional Densidad Baja (HD2)",
+                    type: "vector",
+                    geojsonId: "HDB_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZonSec",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
+                    legendItem: "HD2",
+                    defaultVisible: false,
+                    defaultZ: 821
+                  },
+                  {
+                    id: "HDMedia_SantiagoTLG",
+                    name: "Habitacional Densidad Media (HD3)",
+                    type: "vector",
+                    geojsonId: "HDMedia_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZonSec",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
+                    legendItem: "HD3",
+                    defaultVisible: false,
+                    defaultZ: 822
+                  },
+                  {
+                    id: "CSDMinima_SantiagoTLG",
+                    name: "CSD1: Comercio y Servicios Densidad Mínima",
+                    type: "vector",
+                    geojsonId: "CSDMinima_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZonSec",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
+                    legendItem: "CSD1",
+                    defaultVisible: false,
+                    defaultZ: 823
+                  },
+                  {
+                    id: "CSDB_SantiagoTLG",
+                    name: "CSD2: Comercio y Servicios Densidad Baja",
+                    type: "vector",
+                    geojsonId: "CSDB_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZonSec",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
+                    legendItem: "CSD2",
+                    defaultVisible: false,
+                    defaultZ: 824
+                  },
+                  {
+                    id: "CSDMedia_SantiagoTLG",
+                    name: "CSD3: Comercio y Servicios Densidad Media",
+                    type: "vector",
+                    geojsonId: "CSDMedia_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZonSec",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
+                    legendItem: "CSD3",
+                    defaultVisible: false,
+                    defaultZ: 825
+                  },
+                  {
+                    id: "IL_SantiagoTLG",
+                    name: "Industria Ligera (IL)",
+                    type: "vector",
+                    geojsonId: "IL_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZonSec",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
+                    legendItem: "IL",
+                    defaultVisible: false,
+                    defaultZ: 826
+                  },
+                  {
+                    id: "EP_SantiagoTLG",
+                    name: "Equipamiento Público (EQ)",
+                    type: "vector",
+                    geojsonId: "EP_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZonSec",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
+                    legendItem: "EQ",
+                    defaultVisible: false,
+                    defaultZ: 827
+                  },
+                  {
+                    id: "PA_SantiagoTLG",
+                    name: "Polígono de Actuación (PA)",
+                    type: "vector",
+                    geojsonId: "PA_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZonSec",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Zonificación Secundaria)",
+                    legendItem: "PA",
+                    defaultVisible: false,
+                    defaultZ: 828
+                  },
+                ],
+              },
+
+              /* -------- Uso no Urbano -------- */
+              {
+                id: "santiago_no_urb",
+                name: "Uso no Urbano",
+                layers: [
+                  {
+                    id: "APROV_SantiagoTLG",
+                    name: "Aprovechamiento",
+                    type: "vector",
+                    geojsonId: "APROV_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_UsoNoUrbano",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Uso no Urbano)",
+                    legendItem: "Aprovechamiento",
+                    defaultVisible: false,
+                    defaultZ: 830
+                  },
+                  {
+                    id: "APROV_CONS_SantiagoTLG",
+                    name: "Aprovechamiento – Conservación",
+                    type: "vector",
+                    geojsonId: "APROV_CONS_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_UsoNoUrbano",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Uso no Urbano)",
+                    legendItem: "Aprovechamiento-Conservación",
+                    defaultVisible: false,
+                    defaultZ: 831
+                  },
+                  {
+                    id: "APROV_RES_SantiagoTLG",
+                    name: "Aprovechamiento – Restauración",
+                    type: "vector",
+                    geojsonId: "APROV_RES_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_UsoNoUrbano",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Uso no Urbano)",
+                    legendItem: "Aprovechamiento-Restauración",
+                    defaultVisible: false,
+                    defaultZ: 832
+                  },
+                  {
+                    id: "CONS_SantiagoTLG",
+                    name: "Conservación",
+                    type: "vector",
+                    geojsonId: "CONS_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_UsoNoUrbano",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Uso no Urbano)",
+                    legendItem: "Conservación",
+                    defaultVisible: false,
+                    defaultZ: 833
+                  },
+                  {
+                    id: "CONS_RES_SantiagoTLG",
+                    name: "Conservación – Restauración",
+                    type: "vector",
+                    geojsonId: "CONS_RES_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_UsoNoUrbano",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Uso no Urbano)",
+                    legendItem: "Conservación-Restauración",
+                    defaultVisible: false,
+                    defaultZ: 834
+                  },
+                  {
+                    id: "PROT_SantiagoTLG",
+                    name: "Protección",
+                    type: "vector",
+                    geojsonId: "PROT_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_UsoNoUrbano",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Uso no Urbano)",
+                    legendItem: "Protección",
+                    defaultVisible: false,
+                    defaultZ: 835
+                  },
+                  {
+                    id: "RES_SantiagoTLG",
+                    name: "Restauración",
+                    type: "vector",
+                    geojsonId: "RES_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_UsoNoUrbano",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — PMDU (Uso no Urbano)",
+                    legendItem: "Restauración",
+                    defaultVisible: false,
+                    defaultZ: 836
+                  },
+                ]
+              },
+
+              /* -------- Centros de Población -------- */
+              {
+                id: "santiago_cp",
+                name: "Centro de Población",
+                layers: [
+                  {
+                    id: "CP_Santiago_Tulantepec",
+                    name: "CP Santiago Tulantepec",
+                    type: "vector",
+                    geojsonId: "CP_Santiago_Tulantepec",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_CP",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — Centros de Población",
+                    legendItem: "Santiago Tulantepec",
+                    meta: { asLine: true, weight: 3, dashArray: "4 3" },
+                    defaultVisible: false,
+                    defaultZ: 840
+                  },
+                  {
+                    id: "CP_El_Pedregal_de_San_Jose",
+                    name: "CP El Pedregal de San José",
+                    type: "vector",
+                    geojsonId: "CP_El_Pedregal_de_San_Jose",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_CP",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — Centros de Población",
+                    legendItem: "El Pedregal de San José",
+                    meta: { asLine: true, weight: 3, dashArray: "4 3" },
+                    defaultVisible: false,
+                    defaultZ: 841
+                  },
+                  {
+                    id: "CP_Los_Romeros",
+                    name: "CP Los Romeros",
+                    type: "vector",
+                    geojsonId: "CP_Los_Romeros",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_CP",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — Centros de Población",
+                    legendItem: "Los Romeros",
+                    meta: { asLine: true, weight: 3, dashArray: "4 3" },
+                    defaultVisible: false,
+                    defaultZ: 842
+                  },
+                  {
+                    id: "CP_Las_Lajas",
+                    name: "CP Las Lajas",
+                    type: "vector",
+                    geojsonId: "CP_Las_Lajas",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_CP",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — Centros de Población",
+                    legendItem: "Las Lajas",
+                    meta: { asLine: true, weight: 3, dashArray: "4 3" },
+                    defaultVisible: false,
+                    defaultZ: 843
+                  },
+                  {
+                    id: "CP_Emiliano_Zapata",
+                    name: "CP Emiliano Zapata",
+                    type: "vector",
+                    geojsonId: "CP_Emiliano_Zapata",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_CP",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — Centros de Población",
+                    legendItem: "Emiliano Zapata",
+                    meta: { asLine: true, weight: 3, dashArray: "4 3" },
+                    defaultVisible: false,
+                    defaultZ: 844
+                  },
+                  {
+                    id: "CP_Ventoquipa",
+                    name: "CP Ventoquipa",
+                    type: "vector",
+                    geojsonId: "CP_Ventoquipa",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_CP",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — Centros de Población",
+                    legendItem: "Ventoquipa",
+                    meta: { asLine: true, weight: 3, dashArray: "4 3" },
+                    defaultVisible: false,
+                    defaultZ: 845
+                  },
+                ]
+              },
+
+              /* -------- Definición de Límites -------- */
+              {
+                id: "santiago_def_lim",
+                name: "Definición de Límites Municipales",
+                layers: [
+                  {
+                    id: "Definicion_de_Limites_SantiagoTLG",
+                    name: "Definición de Límites Territoriales",
+                    type: "vector",
+                    geojsonId: "definicionLimites_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_DefLim",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — Definición de Límites",
+                    legendItem: "Definición de Límites Territoriales",
+                    meta: { asLine: true, weight: 3, dashArray: "8 4" },
+                    defaultVisible: false,
+                    defaultZ: 850
+                  }
+                ]
+              },
+
+              /* -------- Zona Arqueológica -------- */
+              {
+                id: "santiago_za",
+                name: "Zona Arqueológica",
+                layers: [
+                  {
+                    id: "Zona_Arqueologica_Zazacuala",
+                    name: "Zona Arqueológica Zazacuala",
+                    type: "vector",
+                    geojsonId: "zonaArqueologica_SantiagoTLG",
+                    hasLegend: true,
+                    legendKey: "PMDU_SantiagoTLG_ZA",
+                    legendTitle: "Santiago de Tulantepec de Lugo Guerrero — Zona Arqueológica",
+                    legendItem: "Zona Arqueológica Zazacuala",
+                    meta: { asLine: true, weight: 3, dashArray: "1 4" },
+                    defaultVisible: false,
+                    defaultZ: 855
+                  }
+                ]
+              },
+
+            ],
+          },
+        ],
+      },
+
+      
     ],
   },
 
