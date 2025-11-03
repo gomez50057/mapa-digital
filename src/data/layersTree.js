@@ -1273,7 +1273,7 @@ export const LAYERS_TREE = [
                     geojsonId: "Habitacional_Densidad_Mínima_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_ZonSec",
-                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Zonificación Secundaria)",
                     legendItem: "Habitacional Densidad Mínima (HD1)",
                     defaultVisible: false,
                     defaultZ: 760
@@ -1285,7 +1285,7 @@ export const LAYERS_TREE = [
                     geojsonId: "Habitacional_Densidad_Baja_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_ZonSec",
-                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Zonificación Secundaria)",
                     legendItem: "Habitacional Densidad Baja (HD2)",
                     defaultVisible: false,
                     defaultZ: 761
@@ -1297,7 +1297,7 @@ export const LAYERS_TREE = [
                     geojsonId: "comercio_y_servicios_densidad_minima_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_ZonSec",
-                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Zonificación Secundaria)",
                     legendItem: "CSD1: Comercio y Servicios Densidad Mínima",
                     defaultVisible: false,
                     defaultZ: 762
@@ -1309,7 +1309,7 @@ export const LAYERS_TREE = [
                     geojsonId: "comercio_y_servicios_densidad_baja_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_ZonSec",
-                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Zonificación Secundaria)",
                     legendItem: "CSD2: Comercio y Servicios Densidad Baja",
                     defaultVisible: false,
                     defaultZ: 763
@@ -1321,7 +1321,7 @@ export const LAYERS_TREE = [
                     geojsonId: "comercio_y_servicios_densidad_media_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_ZonSec",
-                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Zonificación Secundaria)",
                     legendItem: "CSD3: Comercio y Servicios Densidad Media",
                     defaultVisible: false,
                     defaultZ: 764
@@ -1333,7 +1333,7 @@ export const LAYERS_TREE = [
                     geojsonId: "Equipamiento_Publico_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_ZonSec",
-                    legendTitle: "Cuautepec — PMDU (Zonificación Secundaria)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Zonificación Secundaria)",
                     legendItem: "Equipamiento Público (EQ)",
                     defaultVisible: false,
                     defaultZ: 765
@@ -1353,7 +1353,7 @@ export const LAYERS_TREE = [
                     geojsonId: "Aprovechamiento_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_NoUrbano",
-                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Uso no Urbano)",
                     legendItem: "Aprovechamiento",
                     defaultVisible: false,
                     defaultZ: 770
@@ -1365,7 +1365,7 @@ export const LAYERS_TREE = [
                     geojsonId: "Aprovechamiento_conservacion_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_NoUrbano",
-                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Uso no Urbano)",
                     legendItem: "Aprovechamiento – Conservación",
                     defaultVisible: false,
                     defaultZ: 771
@@ -1377,7 +1377,7 @@ export const LAYERS_TREE = [
                     geojsonId: "Aprovechamiento_restauracion_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_NoUrbano",
-                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Uso no Urbano)",
                     legendItem: "Aprovechamiento – Restauración",
                     defaultVisible: false,
                     defaultZ: 772
@@ -1389,7 +1389,7 @@ export const LAYERS_TREE = [
                     geojsonId: "Conservacion_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_NoUrbano",
-                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Uso no Urbano)",
                     legendItem: "Conservación",
                     defaultVisible: false,
                     defaultZ: 773
@@ -1401,7 +1401,7 @@ export const LAYERS_TREE = [
                     geojsonId: "Conservacion_restauracion_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_NoUrbano",
-                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Uso no Urbano)",
                     legendItem: "Conservación – Restauración",
                     defaultVisible: false,
                     defaultZ: 774
@@ -1413,7 +1413,7 @@ export const LAYERS_TREE = [
                     geojsonId: "Restauracion_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_NoUrbano",
-                    legendTitle: "Cuautepec — PMDU (Uso no Urbano)",
+                    legendTitle: "Cuautepec de Hinojosa — PMDU (Uso no Urbano)",
                     legendItem: "Restauración",
                     defaultVisible: false,
                     defaultZ: 775
@@ -1433,7 +1433,7 @@ export const LAYERS_TREE = [
                     geojsonId: "CP_Cuautepec",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_CP",
-                    legendTitle: "Cuautepec — Centros de Población",
+                    legendTitle: "Cuautepec de Hinojosa — Centros de Población",
                     legendItem: "CP Cuautepec",
                     defaultVisible: false,
                     defaultZ: 780,
@@ -1446,7 +1446,7 @@ export const LAYERS_TREE = [
                     geojsonId: "CP_Santa_Elena_Paliseca",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_CP",
-                    legendTitle: "Cuautepec — Centros de Población",
+                    legendTitle: "Cuautepec de Hinojosa — Centros de Población",
                     legendItem: "CP Santa Elena Paliseca",
                     defaultVisible: false,
                     defaultZ: 781,
@@ -1459,7 +1459,7 @@ export const LAYERS_TREE = [
                     geojsonId: "CP_San_Lorenzo_Sayula",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_CP",
-                    legendTitle: "Cuautepec — Centros de Población",
+                    legendTitle: "Cuautepec de Hinojosa — Centros de Población",
                     legendItem: "CP San Lorenzo Sayula",
                     defaultVisible: false,
                     defaultZ: 782,
@@ -1472,7 +1472,7 @@ export const LAYERS_TREE = [
                     geojsonId: "CP_Cuautepec_Tecocomulco_JuarezF",
                     hasLegend: true,
                     legendKey: "PMDU_Cuautepec_CP",
-                    legendTitle: "Cuautepec — Centros de Población",
+                    legendTitle: "Cuautepec de Hinojosa — Centros de Población",
                     legendItem: "CP Tecocomulco de Juárez",
                     defaultVisible: false,
                     defaultZ: 783,
