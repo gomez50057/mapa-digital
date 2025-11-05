@@ -18,6 +18,176 @@ const fmtArea = (v) => {
   return Number.isFinite(n) ? `${n.toFixed(3)} km²` : "—";
 };
 
+/** Formatea hectáreas: usa fmtHa si existe; si no, fallback con 3 decimales. */
+const fmtHa3 = (v) => {
+  const n = Number(v);
+  return Number.isFinite(n)
+    ? `${n.toLocaleString('es-MX', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} ha`
+    : v;
+};
+const asHa = (v) => (typeof fmtHa === 'function' ? fmtHa(v) : fmtHa3(v));
+
+/** Alias de visualización de campos → Etiqueta mostrada */
+const DISPLAY_ALIASES = {
+  USOS_SUELO: 'usos del suelo',
+  SUPERFICIE: 'Superficie',
+  PREF_FOR_H: 'Terreno Preferentemente Forestal',
+  FORESTAL_H: 'Superficie con cobertura/uso forestal',
+  AGUA_HA: 'Superficie de cuerpos de agua',
+  APTITUD_SE: 'Aptitud del Terreno Sectorial',
+  RIESGOS_AM: 'Riesgos ambientales identificados',
+  ACUIFERO: 'Nombre/clave del acuífero asociado',
+  DISP_AG_SU: 'Disponibilidad de agua subterránea',
+  VOL_EXTR: 'Volumen de extracción de agua subterránea',
+  REC_ACUIF: 'Recarga del acuífero',
+  CAPT_CO2: 'Capacidad/Captura de CO₂',
+  GRADO_CONS: 'Grado de conservación',
+  VAL_CONSER: 'Valor de conservación',
+  FRAG_ECOL: 'Fragmentación ecológica',
+  USO_CONDIC: 'Uso condicionado',
+  USO_INCOMP: 'Uso incompatible',
+  USO_INCOM2: 'Uso incompatible',
+  USO_INCOMP2: 'Uso incompatible',
+  NOMBRE_ANP: 'Nombre del Área Natural Protegida',
+
+  POLITICA: 'Política',
+  Politica: 'Política',
+  'Política': 'Política',
+
+  REGION: 'Región',
+  Region: 'Región',
+  'REGIÓN': 'Región',
+  'Región': 'Región',
+};
+
+// Campos que deben terminar en punto si traen coma al final
+const PERIODIZE_FIELDS = new Set([
+  'Criterios de Regulación Ecológica',
+  'Estrategias ecológicas',
+  'Uso incompatible',
+]);
+
+// Reemplaza periodizeIfTrailingComma por esto:
+function ensureFinalPeriod(label, value) {
+  if (value == null) return value;
+  if (!PERIODIZE_FIELDS.has(label)) return value;
+  const s = String(value).trim();
+  if (!s) return s;
+  // Quita comas/semicolones/2 puntos (y espacios) al final y garantiza punto final.
+  const stripped = s.replace(/[,\s;:]+$/u, '');
+  return /\.$/u.test(stripped) ? stripped : `${stripped}.`;
+}
+
+
+/** Campos cuyo valor debe llevar sufijo 'ha' (además de SUPERFICIE que usa fmtHa) */
+const NEEDS_HA_SUFFIX = new Set(['PREF_FOR_H', 'FORESTAL_H', 'AGUA_HA']);
+
+// === NUEVO: mapa de unidades para campos específicos ===
+const UNIT_SUFFIX_MAP = {
+  DISP_AG_SU: 'hm³/año',  // Disponibilidad de agua subterránea
+  VOL_EXTR: 'hm³/año',  // Volumen de extracción de agua subterránea
+  CAPT_CO2: 'CO₂/año',  // Capacidad/Captura de CO₂
+};
+
+/** Grupos a consolidar en un solo campo */
+const GROUPS = {
+  'Lineamiento': ['LINEAMIENT', 'LINEAMIEN2', 'LINEAMIEN3', 'LINEAMIEN4', 'LINEAMIEN5', 'LINEAMIEN6', 'LINEAMIEN7'],
+  'Criterios de Regulación Ecológica': ['CRE_1', 'CRE_2', 'CRE_3', 'CRE_4', 'CRE_5', 'CRE_6'],
+  'Estrategias ecológicas': ['EST_1', 'EST_2', 'EST_3', 'EST_4'],
+  'Uso incompatible': ['USO_INCOMP', 'USO_INCOM2', 'USO_INCOMP2'],
+};
+
+/** Claves que no deben mostrarse (títulos/duplicados) */
+const BASE_OMIT = new Set(['NOMGEO']);
+
+/** Normaliza un par k/v → { label, value, skip } */
+function normalizeKV(k, v) {
+  if (!Object.prototype.hasOwnProperty.call({ [k]: true }, k)) return { skip: true };
+  let label = DISPLAY_ALIASES[k] || k;
+  let value = v;
+
+  // Campos con unidad específica (hm³/año o CO₂/año)
+  if (UNIT_SUFFIX_MAP[k]) {
+    const unit = UNIT_SUFFIX_MAP[k];
+    const n = Number(v);
+    if (Number.isFinite(n)) {
+      value = `${n.toLocaleString('es-MX', { maximumFractionDigits: 3 })} ${unit}`;
+    } else {
+      const s = String(v ?? '').trim();
+      // Evita duplicar la unidad si ya viene en el valor
+      const endsWithUnit = new RegExp(`${unit.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}$`, 'i').test(s);
+      value = s ? (endsWithUnit ? s : `${s} ${unit}`) : '—';
+    }
+  }
+
+  // SUPERFICIE → siempre con formato ha
+  if (/^(SUPERFICIE|Superficie)$/i.test(k)) {
+    label = 'Superficie';
+    value = asHa(v);
+  }
+
+  // Campos con sufijo ha
+  if (NEEDS_HA_SUFFIX.has(k)) {
+    const n = Number(v);
+    value = Number.isFinite(n)
+      ? `${n.toLocaleString('es-MX', { maximumFractionDigits: 3 })} ha`
+      : (typeof v === 'string' && !/ha$/i.test(v) ? `${v} ha` : v);
+  }
+
+  return { label, value, skip: false };
+}
+
+/** Construye HTML de popup con normalización + consolidación */
+function buildPopupHTML(p, {
+  titleKeys = ['ZonSec', 'ZonSec2022', 'Uso', 'USO', 'Categoria'],
+  extraOmit = [],
+  perKeyRender = null, // fn({k, label, value}) → string|undefined (para casos especiales)
+} = {}) {
+  const title = (titleKeys.map((k) => p?.[k]).find(Boolean) || '').toString().toUpperCase();
+  let html = `<div class="PopupSubT"><b>${title}</b></div>`;
+
+  const omit = new Set([...BASE_OMIT, ...titleKeys, ...extraOmit]);
+
+  // 1) Consolidar grupos (limpia fragmentos y asegura punto final)
+  const consolidated = {};
+  for (const [outLabel, keys] of Object.entries(GROUPS)) {
+    const vals = keys
+      .map((k) => p?.[k])
+      .filter((x) => x != null && String(x).trim() !== '')
+      // limpia cada fragmento: quita , ; : y espacios finales
+      .map((s) => String(s).trim().replace(/[,\s;:]+$/u, ''));
+
+    if (vals.length) {
+      const joined = vals.join('; ');
+      consolidated[outLabel] = ensureFinalPeriod(outLabel, joined);
+    }
+    keys.forEach((k) => omit.add(k));
+  }
+
+  // 2) Recorrer props originales con normalización
+  for (const k in p) {
+    if (!Object.hasOwn(p, k) || omit.has(k)) continue;
+    const { label, value, skip } = normalizeKV(k, p[k]);
+    if (skip) continue;
+
+    // Gancho para personalizaciones por municipio/campo
+    if (typeof perKeyRender === 'function') {
+      const custom = perKeyRender({ k, label, value });
+      if (typeof custom === 'string') { html += custom; continue; }
+    }
+    const displayValue = ensureFinalPeriod(label, value);
+    html += `<b>${label}:</b> ${displayValue}<br>`;
+  }
+
+  // 3) Añadir los campos consolidados al final (orden definido)
+  for (const [label, value] of Object.entries(consolidated)) {
+    const displayValue = ensureFinalPeriod(label, value);
+    html += `<b>${label}:</b> ${displayValue}<br>`;
+  }
+
+  return html;
+}
+
 /* ==================== ZMVM (por entidad) ==================== */
 function buildZMVM(data, paneId) {
   return L.geoJSON(data, {
@@ -175,110 +345,60 @@ function pmduPoly(data, paneId, ld, popupBuilder) {
 }
 
 /* ====== Popup builders ====== */
-const popupPachuca = (p) =>
-  `<div class='PopupSubT'><b>Etapas de Crecimiento</b></div>${p?.Name_1 ? `<b>Estatus:</b> ${p.Name_1}<br>` : ""}${p?.Ar ? `<b>Área:</b> ${fmtHa(p.Ar)}` : ""}`;
+const popupPachuca = (p) => {
+  const estatus = p?.Name_1 ? `<b>Estatus:</b> ${p.Name_1}<br>` : '';
+  const area = p?.Ar != null ? `<b>Área:</b> ${asHa(p.Ar)}` : '';
+  return `<div class="PopupSubT"><b>Etapas de Crecimiento</b></div>${estatus}${area}`;
+};
 
+
+/** Tizayuca (con aviso visual en "Plazo") */
 const popupTizayuca = (p) => {
-  const keyMappings = { ZonSec: "Zona Sector" };
-  let html = `<div class='PopupSubT'><b>${(p?.ZonSec2022 || "").toString().toUpperCase()}</b></div>`;
-  for (const k in p) {
-    if (!Object.hasOwn(p, k) || k === "ZonSec2022") continue;
-    let v = p[k];
-    const display = keyMappings[k] || k;
-    if (k === "Superficie") v = fmtHa(v);
-    if (k === "Plazo") html += `<b>${display}:</b> ${v}<p class='PopText'> Plazo</p><br>`;
-    else html += `<b>${display}:</b> ${v}<br>`;
-  }
-  return html;
+  const title = (p?.ZonSec2022 || '').toString().toUpperCase();
+  return buildPopupHTML(p, {
+    titleKeys: ['ZonSec2022'],
+    perKeyRender: ({ k, label, value }) => {
+      if (k === 'Superficie' || /^SUPERFICIE$/i.test(k)) {
+        return `<b>Superficie:</b> ${asHa(p[k])}<br>`;
+      }
+      if (k === 'Plazo') {
+        return `<b>${label}:</b> ${value}<p class="PopText"> Plazo</p><br>`;
+      }
+      return undefined;
+    },
+  }).replace('<div class="PopupSubT"><b></b></div>', `<div class="PopupSubT"><b>${title}</b></div>`);
 };
 
-const popupVilla = (p) => {
-  const keyMappings = { ZonSec: "Zona Sector" };
-  let html = `<div class='PopupSubT'><b>${(p?.ZonSec || "").toString().toUpperCase()}</b></div>`;
-  for (const k in p) {
-    if (!Object.hasOwn(p, k) || k === "ZonSec" || k === "NOMGEO") continue;
-    let v = p[k];
-    const display = keyMappings[k] || k;
-    if (k === "Superficie") v = fmtHa(v);
-    html += `<b>${display}:</b> ${v}<br>`;
-  }
-  return html;
-};
+/** Villa de Tezontepec (ignora NOMGEO y muestra título desde ZonSec) */
+const popupVilla = (p) => buildPopupHTML(p, {
+  titleKeys: ['ZonSec'],
+  extraOmit: ['NOMGEO'],
+});
 
-const popupMR = (p) => {
-  let html = `<div class='PopupSubT'><b>${(p?.ZonSec || "").toString().toUpperCase()}</b></div>`;
-  for (const k in p) {
-    if (!Object.hasOwn(p, k)) continue;
-    let v = p[k];
-    if (k === "Superficie") v = fmtHa(v);
-    if (k === "Etapa" && (v === null || v === undefined)) continue;
-    html += `<b>${k}:</b> ${v}<br>`;
-  }
-  return html;
-};
+/** Mineral de la Reforma (genérico, respetando Superficie) */
+const popupMR = (p) => buildPopupHTML(p, {
+  titleKeys: ['ZonSec'],
+});
 
-/** Epazoyucan — genérico: respeta Superficie, ignora campos de título duplicados */
-const popupEpaz = (p) => {
-  const title = (p?.ZonSec || p?.ZonSec2022 || p?.Uso || p?.USO || "").toString().toUpperCase();
-  let html = `<div class='PopupSubT'><b>${title}</b></div>`;
-  for (const k in p) {
-    if (!Object.hasOwn(p, k)) continue;
-    if (["ZonSec", "ZonSec2022", "Uso", "USO", "NOMGEO"].includes(k)) continue;
-    let v = p[k];
-    if (/(Superficie|Área|Area)/i.test(k)) {
-      const n = Number(v); v = Number.isFinite(n) ? `${n.toFixed(3)} ha` : v;
-    }
-    html += `<b>${k}:</b> ${v}<br>`;
-  }
-  return html;
-};
+/** Epazoyucan (genérico) */
+const popupEpaz = (p) => buildPopupHTML(p, {
+  titleKeys: ['ZonSec', 'ZonSec2022', 'Uso', 'USO'],
+});
 
-/** Cuautepec — genérico: respeta Superficie, ignora campos de título duplicados */
-const popupCuautepec = (p) => {
-  const title = (p?.ZonSec || p?.ZonSec2022 || p?.Uso || p?.USO || "").toString().toUpperCase();
-  let html = `<div class='PopupSubT'><b>${title}</b></div>`;
-  for (const k in p) {
-    if (!Object.hasOwn(p, k)) continue;
-    if (["ZonSec", "ZonSec2022", "Uso", "USO", "NOMGEO"].includes(k)) continue;
-    let v = p[k];
-    if (/(Superficie|Área|Area)/i.test(k)) {
-      const n = Number(v); v = Number.isFinite(n) ? `${n.toFixed(3)} ha` : v;
-    }
-    html += `<b>${k}:</b> ${v}<br>`;
-  }
-  return html;
-};
+/** Cuautepec (genérico) */
+const popupCuautepec = (p) => buildPopupHTML(p, {
+  titleKeys: ['ZonSec', 'ZonSec2022', 'Uso', 'USO'],
+});
 
-/* ====== Popup genérico Tepeji (similar a Epaz/Cuautepec) ====== */
-const popupTepeji = (p) => {
-  const title = (p?.ZonSec || p?.USO || p?.Uso || p?.Clasif || p?.Categoria || "").toString().toUpperCase();
-  let html = `<div class='PopupSubT'><b>${title || "TEPEJI"}</b></div>`;
-  for (const k in p) {
-    if (!Object.hasOwn(p, k)) continue;
-    let v = p[k];
-    if (/(Superficie|Área|Area)/i.test(k)) {
-      const n = Number(v); v = Number.isFinite(n) ? `${n.toFixed(3)} ha` : v;
-    }
-    html += `<b>${k}:</b> ${v}<br>`;
-  }
-  return html;
-};
+/** Tepeji (genérico; conserva posibles títulos alternos) */
+const popupTepeji = (p) => buildPopupHTML(p, {
+  titleKeys: ['ZonSec', 'USO', 'Uso', 'Clasif', 'Categoria'],
+});
 
-/** Santiago TLG — genérico: respeta Superficie/Área y omite duplicados de título */
-const popupSantiago = (p) => {
-  const title = (p?.ZonSec || p?.ZonSec2022 || p?.Uso || p?.USO || p?.Categoria || "").toString().toUpperCase();
-  let html = `<div class='PopupSubT'><b>${title || "SANTIAGO DE TULANTEPEC"}</b></div>`;
-  for (const k in p) {
-    if (!Object.hasOwn(p, k)) continue;
-    if (["ZonSec", "ZonSec2022", "Uso", "USO", "NOMGEO"].includes(k)) continue;
-    let v = p[k];
-    if (/(Superficie|Área|Area)/i.test(k)) {
-      const n = Number(v); v = Number.isFinite(n) ? `${n.toFixed(3)} ha` : v;
-    }
-    html += `<b>${k}:</b> ${v}<br>`;
-  }
-  return html;
-};
+/** Santiago de Tulantepec de Lugo Guerrero (genérico) */
+const popupSantiago = (p) => buildPopupHTML(p, {
+  titleKeys: ['ZonSec', 'ZonSec2022', 'Uso', 'USO', 'Categoria'],
+});
 
 /* ====== Builders concretos ====== */
 const buildPachuca = (data, paneId, ld) => pmduPoly(data, paneId, ld, popupPachuca);
